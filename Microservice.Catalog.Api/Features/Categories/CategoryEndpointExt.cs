@@ -1,4 +1,5 @@
 ﻿using Microservice.Catalog.Api.Features.Categories.Create;
+using Microservices.Shared.Filter;
 
 namespace Microservice.Catalog.Api.Features.Categories
 {
