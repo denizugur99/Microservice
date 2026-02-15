@@ -1,4 +1,4 @@
-﻿using FluentValidation;
+﻿
 
 namespace Microservice.Catalog.Api.Features.Categories.Create
 {

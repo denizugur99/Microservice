@@ -1,6 +1,19 @@
-@Microservice.Catalog.Api_HostAddress = http://localhost:5100
+@baseUrl = http://localhost:5100
 
-GET {{Microservice.Catalog.Api_HostAddress}}/weatherforecast/
+# Get Categories
+GET {{baseUrl}}/app/categories
 Accept: application/json
 
 ###
+
+# Create Category
+POST {{baseUrl}}/app/categories
+Accept: application/json
+Content-Type: application/json
+
+{
+  "categoryName": "Test"
+}
+###
+GET {{baseUrl}}/app/categories/08de65c7-548d-267f-00d8-61bd5a580000
+Accept: application/json

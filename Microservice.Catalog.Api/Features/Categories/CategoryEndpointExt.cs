@@ -1,5 +1,6 @@
 ﻿using Microservice.Catalog.Api.Features.Categories.Create;
-using Microservices.Shared.Filter;
+using Microservice.Catalog.Api.Features.Categories.GetAll;
+using Microservice.Catalog.Api.Features.Categories.GetById;
 
 namespace Microservice.Catalog.Api.Features.Categories
 {
@@ -7,7 +8,10 @@ namespace Microservice.Catalog.Api.Features.Categories
     {
         public static void AddCategoryGroupEndpoints(this WebApplication app)
         {
-            var categoryGroup = app.MapGroup("app/categories").CreateCategoryGroupItemEndpoint();
+            var categoryGroup = app.MapGroup("/app/categories")
+                .CreateCategoryGroupItemEndpoint()
+                .ListCategoryGroupItemEndpoint()
+                .GetByIdCategoryGroupItemEndpoint();
 
         }
     }

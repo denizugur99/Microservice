@@ -1,8 +1,5 @@
-﻿using MediatR;
-using Microservices.Shared;
-
-namespace Microservice.Catalog.Api.Features.Categories.Create
+﻿namespace Microservice.Catalog.Api.Features.Categories.Create
 {
-    public record CreateCategoryCommand(string categoryName):IRequest<ServiceResult<CreateCategoryResponse>>;
+    public record CreateCategoryCommand(string categoryName):IrequestByServiceResult<CreateCategoryResponse>;
     
 }
