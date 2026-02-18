@@ -15,7 +15,7 @@ namespace Microservice.Catalog.Api.Features.Courses.GetAll
             var categories=await context.Categories.ToListAsync(cancellationToken);
             foreach (var course in courses)
             {
-                course.Category= categories.First(c=>c.Id==course.CategoryId);
+                course.Category = categories.First(c => c.Id == course.CategoryId);
             }
             var courseDtos=mapper.Map<List<CourseDto>>(courses);
             return ServiceResult<List<CourseDto>>.SuccesAsOkay(courseDtos);
@@ -26,7 +26,8 @@ namespace Microservice.Catalog.Api.Features.Courses.GetAll
     {
         public static RouteGroupBuilder GetAllCourseEndpoint(this RouteGroupBuilder groupBuilder)
         {
-            groupBuilder.MapGet("/", async ( IMediator mediator) => (await mediator.Send(new GetAllCoursesQuery())).ToGenericResult()).WithName("GetAllCourse");
+            groupBuilder.MapGet("/", async ( IMediator mediator) => (await mediator.Send(new GetAllCoursesQuery())).ToGenericResult()).WithName("GetAllCourse")
+                .MapToApiVersion(1, 0);
                
             return groupBuilder;
         }

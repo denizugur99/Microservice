@@ -1,4 +1,5 @@
-﻿using Microservices.Shared.Filter;
+﻿using Asp.Versioning.Builder;
+using Microservices.Shared.Filter;
 
 namespace Microservice.Catalog.Api.Features.Categories.Create
 {
@@ -7,7 +8,9 @@ namespace Microservice.Catalog.Api.Features.Categories.Create
         public static RouteGroupBuilder CreateCategoryGroupItemEndpoint(this RouteGroupBuilder groupBuilder)
         {
             groupBuilder.MapPost("/",
-                async (CreateCategoryCommand command, IMediator mediator) => (await mediator.Send(command)).ToGenericResult()).WithName("Createcategory").Produces<Guid>(StatusCodes.Status201Created).Produces(StatusCodes.Status404NotFound).AddEndpointFilter<ValidationFilter<CreateCategoryCommand>>();
+                async (CreateCategoryCommand command, IMediator mediator) => (await mediator.Send(command)).ToGenericResult()).WithName("Createcategory")
+                .MapToApiVersion(1,0)
+                .Produces<Guid>(StatusCodes.Status201Created).Produces(StatusCodes.Status404NotFound).AddEndpointFilter<ValidationFilter<CreateCategoryCommand>>();
           
             return groupBuilder;
         }

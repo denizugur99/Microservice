@@ -1,15 +1,16 @@
 @baseUrl = http://localhost:5100
-@categoryId =08de65c7-548d-267f-00d8-61bd5a580000
+@categoryId =08de6f12-7c92-bd9b-00d8-61bd5a580000
 @courseId =08de6cd5-a690-75ac-00d8-61bd5a580000
+@userId =898688f4-de46-415f-a393-9e73b8fb3bd1
 
 # Get Categories
-GET {{baseUrl}}/api/categories
+GET {{baseUrl}}/api/v1.0/categories
 Accept: application/json
 
 ###
 
 # Create Category
-POST {{baseUrl}}/api/categories
+POST {{baseUrl}}/api/v1.0/categories
 Accept: application/json
 Content-Type: application/json
 
@@ -17,10 +18,10 @@ Content-Type: application/json
   "categoryName": "Test"
 }
 ###
-GET {{baseUrl}}/api/categories/{{categoryId}}
+GET {{baseUrl}}/api/v1.0/categories/{{categoryId}}
 Accept: application/json
 ###
-POST {{baseUrl}}/api/course
+POST {{baseUrl}}/api/v1.0/course
 Accept: application/json
 Content-Type: application/json
 {
@@ -30,10 +31,30 @@ Content-Type: application/json
   "price": 99.99,
   "categoryId": "{{categoryId}}"
 }
-
 ###
-GET {{baseUrl}}/api/course
+PUT {{baseUrl}}/api/v1.0/course
+Accept: application/json
+Content-Type: application/json
+{
+  "Id":"{{courseId}}",
+  "name": "Test Course33",
+  "description": "This is a test course33.",
+  "imageUrl": "http://example.com/image2.jpg",
+  "price": 199.99,
+  "categoryId": "{{categoryId}}"
+}
+###
+GET {{baseUrl}}/api/v1.0/course
 Accept: application/json
 ###
-GET {{baseUrl}}/api/course/{{courseId}}
+GET {{baseUrl}}/api/v1.0/course/{{courseId}}
+Accept: application/json
+
+###
+Delete {{baseUrl}}/api/v1.0/course/{{courseId}}
+Accept: application/json
+
+###
+# Get Courses by UserId
+GET {{baseUrl}}/api/v1.0/course/user/{{userId}}
 Accept: application/json

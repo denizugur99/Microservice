@@ -9,6 +9,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOptionsExt();
 builder.Services.AddDatabaseExt();
 builder.Services.AddCommonServiceExt(typeof(CatalogAssembly));
+builder.Services.AddVersionExt();
 
 
 // Add services to the container.
@@ -16,8 +17,17 @@ builder.Services.AddCommonServiceExt(typeof(CatalogAssembly));
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
-app.AddCategoryGroupEndpoints();
-app.AddCourseGroupEndpoints();
+app.AddSeedDataExt().ContinueWith(x =>
+{
+    if (x.IsFaulted)
+        Console.WriteLine(x.Exception?.Message);
+    else
+    {
+        Console.WriteLine("Seed data has been saved to DB");
+    }
+});
+app.AddCategoryGroupEndpoints(app.AddVersionSetExt());
+app.AddCourseGroupEndpoints(app.AddVersionSetExt());
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
