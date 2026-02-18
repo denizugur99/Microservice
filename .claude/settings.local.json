@@ -6,7 +6,11 @@
       "Bash(dotnet run:*)",
       "Bash(timeout:*)",
       "Bash(curl:*)",
-      "Bash(code --install-extension:*)"
+      "Bash(code --install-extension:*)",
+      "Bash(test:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)"
     ]
   }
 }
