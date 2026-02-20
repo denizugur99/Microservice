@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Microservices.Shared\Microservices.Shared.csproj" />
+    <ProjectReference Include="..\Shared\Microservices.Shared.csproj" />
   </ItemGroup>
 
 </Project>
