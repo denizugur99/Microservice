@@ -13,6 +13,7 @@ builder.Services.AddStackExchangeRedisCache(opt =>
 {
     opt.Configuration = builder.Configuration.GetConnectionString("Redis");
 });
+builder.Services.AddScoped<BasketService>();
 builder.Services.AddVersionExt();
 var app = builder.Build();
 

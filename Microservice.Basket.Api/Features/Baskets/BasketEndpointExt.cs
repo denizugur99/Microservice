@@ -1,7 +1,9 @@
 ﻿using Asp.Versioning.Builder;
 using Microservice.Basket.Api.Features.Baskets.AddBasketItem;
 using Microservice.Basket.Api.Features.Baskets.DeleteBasketItem;
+using Microservice.Basket.Api.Features.Baskets.Discount;
 using Microservice.Basket.Api.Features.Baskets.GetBasket;
+using Microservice.Basket.Api.Features.Baskets.RemoveDiscount;
 
 namespace Microservice.Basket.Api.Features.Baskets
 {
@@ -12,7 +14,9 @@ namespace Microservice.Basket.Api.Features.Baskets
             var categoryGroup = app.MapGroup("/api/v{version:apiVersion}/baskets").WithTags("Baskets").WithApiVersionSet(apiVersionSet)
                 .GetBasketGroupEndpoint()
                 .AddBasketGroupItemEndpoint()
-                .DeleteBasketGroupItemEndpoint();
+                .DeleteBasketGroupItemEndpoint()
+                .ApplyDiscountCouponGroupEndpoint()
+                .RemoveDiscountGroupEndpoint();
 
         }
     }

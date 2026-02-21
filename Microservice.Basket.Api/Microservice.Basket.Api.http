@@ -1,5 +1,5 @@
 @baseUrl = http://localhost:5223
-@courseId=08de6cd5-a690-75ac-00d8-61bd5a580000
+@courseId=08de6cd5-a690-75ac-00d8-61bd5a580020
 
 ### Get Basket
 GET {{baseUrl}}/api/v1/baskets/user
@@ -12,7 +12,7 @@ POST {{baseUrl}}/api/v1/baskets/item
 Accept: application/json
 Content-Type: application/json
 {
-  "courseId": "08de6cd5-a690-75ac-00d8-61bd5a580000",
+  "courseId": "08de6cd5-a690-75ac-00d8-61bd5a580020",
   "courseName": "xxxxxx2",
   "coursePrice": 12,
   "imageUrl": "https://example.com/image.jpg"
@@ -22,5 +22,21 @@ Content-Type: application/json
 
 ### Delete Item from Basket
 DELETE {{baseUrl}}/api/v1/baskets/item/{{courseId}}
+
+###
+
+### Apply Discount Coupon to Basket
+PUT {{baseUrl}}/api/v1/baskets/discount
+Accept: application/json
+Content-Type: application/json
+{
+  "coupon": "SUMMER2024",
+  "rate": 0.30
+}
+
+###
+
+### Remove Discount from Basket
+DELETE {{baseUrl}}/api/v1/baskets/discount
 
 ###
