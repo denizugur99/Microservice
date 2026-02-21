@@ -1,5 +1,6 @@
 ﻿using Microservice.Catalog.Api.Features.Courses.Update;
 using Microservices.Shared.Filter;
+using Microservices.Shared.Extensions;
 
 namespace Microservice.Catalog.Api.Features.Courses.Delete
 {
@@ -14,7 +15,7 @@ namespace Microservice.Catalog.Api.Features.Courses.Delete
                 return ServiceResult.ErrorAsNotFound();
             }
             context.Courses.Remove(course);
-            await context.SaveChangesAsync();
+            await context.SaveChangesAsync(cancellationToken);
             return ServiceResult.SuccesAsNoContent();
         }
     }

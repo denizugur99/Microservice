@@ -1,13 +1,26 @@
 @baseUrl = http://localhost:5223
+@courseId=08de6cd5-a690-75ac-00d8-61bd5a580000
 
+### Get Basket
+GET {{baseUrl}}/api/v1/baskets/user
+Accept: application/json
+
+###
+
+### Add Item to Basket
 POST {{baseUrl}}/api/v1/baskets/item
 Accept: application/json
 Content-Type: application/json
 {
   "courseId": "08de6cd5-a690-75ac-00d8-61bd5a580000",
-  "courseName": "xxxxxx",
-  "coursePrice": 12
-  
+  "courseName": "xxxxxx2",
+  "coursePrice": 12,
+  "imageUrl": "https://example.com/image.jpg"
 }
+
+###
+
+### Delete Item from Basket
+DELETE {{baseUrl}}/api/v1/baskets/item/{{courseId}}
 
 ###

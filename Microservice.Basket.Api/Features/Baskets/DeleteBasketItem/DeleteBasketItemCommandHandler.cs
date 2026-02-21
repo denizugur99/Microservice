@@ -15,22 +15,21 @@ namespace Microservice.Basket.Api.Features.Baskets.DeleteBasketItem
         public async Task<ServiceResult> Handle(DeleteBasketItemCommand request, CancellationToken cancellationToken)
         {
             Guid userId = ıdentityService.GetUserId;
-            var cachekey=string.Format(BasketConst.BasketCacheKey, userId);
             var cacheKey = string.Format(BasketConst.BasketCacheKey, userId);
             var basket = await distributedCache.GetStringAsync(cacheKey, cancellationToken);
             if (string.IsNullOrEmpty(basket))
             {
                 return ServiceResult.Error("basket not found",HttpStatusCode.NotFound);
             }
-            var currentBasket = JsonSerializer.Deserialize<BasketDto>(basket);
-            var basketItemDelete=currentBasket!.BasketItems.FirstOrDefault(x=>x.Id==request.courseId);
+            var currentBasket = JsonSerializer.Deserialize<Data.Basket>(basket);
+            var basketItemDelete=currentBasket!.Items.FirstOrDefault(x=>x.Id==request.Id);
             if(basketItemDelete is null)
             {
                 return ServiceResult.Error("basket item not found", HttpStatusCode.NotFound);
             }
-            currentBasket.BasketItems.Remove(basketItemDelete);
-            var Jsonbasket = JsonSerializer.Serialize(basket);
-            await distributedCache.SetStringAsync(cachekey, Jsonbasket, cancellationToken);
+            currentBasket.Items.Remove(basketItemDelete);
+            var jsonBasket = JsonSerializer.Serialize(currentBasket);
+            await distributedCache.SetStringAsync(cacheKey, jsonBasket, cancellationToken);
             return ServiceResult.SuccesAsNoContent();
         }
     }

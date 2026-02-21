@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Microservice\Shared\Microservices.Shared.csproj" />
+    <ProjectReference Include="..\Shared\Microservices.Shared.csproj" />
   </ItemGroup>
 
 </Project>

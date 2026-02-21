@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microservice.Basket.Api.Const;
+using Microservice.Basket.Api.Data;
 using Microservice.Basket.Api.Dto;
 using Microservices.Shared;
 using Microservices.Shared.Services;
@@ -15,28 +16,28 @@ namespace Microservice.Basket.Api.Features.Baskets.AddBasketItem
             Guid userId=ıdentityService.GetUserId;
             var cacheKey=string.Format(BasketConst.BasketCacheKey,userId);
             var basket=await  cache.GetStringAsync(cacheKey,cancellationToken);
-            BasketDto? currentBasket;
-            var newBasketItem = new BasketItemDto(request.CourseId, request.CourseName, request.ImageUrl, request.CoursePrice, null);
+            Data.Basket? currentBasket;
+            var newBasketItem = new BasketItem(request.CourseId, request.CourseName, request.ImageUrl, request.CoursePrice, null);
             if (string.IsNullOrEmpty(basket)) {
-                currentBasket = new BasketDto(userId, [newBasketItem]);
+                currentBasket = new Data.Basket(userId, [newBasketItem]);
                 await CreateCacheAsync(currentBasket, cacheKey, cancellationToken);
                 return ServiceResult.SuccesAsNoContent();
             }
-             currentBasket=JsonSerializer.Deserialize<BasketDto>(basket);
-                var existingBasketItem = currentBasket!.BasketItems.FirstOrDefault(x => x.Id == request.CourseId);
+             currentBasket=JsonSerializer.Deserialize<Data.Basket>(basket);
+                var existingBasketItem = currentBasket!.Items.FirstOrDefault(x => x.Id == request.CourseId);
                 if(existingBasketItem is not null)
                 {
-                    currentBasket.BasketItems.Remove(existingBasketItem);
+                    currentBasket.Items.Remove(existingBasketItem);
                    
                 }
-            currentBasket.BasketItems.Add(newBasketItem);
+            currentBasket.Items.Add(newBasketItem);
             await CreateCacheAsync(currentBasket, cacheKey, cancellationToken);
 
 
             return ServiceResult.SuccesAsNoContent();
 
         }
-        private async Task CreateCacheAsync (BasketDto basket,string cachekey,CancellationToken cancellationToken)
+        private async Task CreateCacheAsync (Data.Basket basket,string cachekey,CancellationToken cancellationToken)
         {
             var Jsonbasket = JsonSerializer.Serialize(basket);
             await cache.SetStringAsync(cachekey, Jsonbasket, cancellationToken);

@@ -1,6 +1,7 @@
-﻿namespace Microservice.Basket.Api.Features.Baskets.DeleteBasketItem
+﻿using Microservices.Shared;
+
+namespace Microservice.Basket.Api.Features.Baskets.DeleteBasketItem
 {
-    public class DeleteBasketItemCommand
-    {
-    }
+    public record DeleteBasketItemCommand(Guid Id) : IrequestByServiceResult;
+    
 }
