@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Microservice.Discount.API.Features.Discount.CreateDiscount
 {
-    public static class CreateDiscountCommandEndpoint
+    public static class GetDiscountQueryEndpoint
     {
         public static RouteGroupBuilder CreateDiscountEndpoint(this RouteGroupBuilder groupBuilder)
         {

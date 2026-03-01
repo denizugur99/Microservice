@@ -1,6 +1,21 @@
 @Microservice.Discount.API_HostAddress = http://localhost:5196
+@code = DISCOUNT15
 
 GET {{Microservice.Discount.API_HostAddress}}/weatherforecast/
 Accept: application/json
 
 ###
+
+POST {{Microservice.Discount.API_HostAddress}}/api/v1/discount
+Content-Type: application/json
+
+{
+  "code": "DISCOUNT15",
+  "rate": 0.5,
+  "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "expireDate": "2026-12-31T23:59:59Z"
+}
+
+###
+
+GET {{Microservice.Discount.API_HostAddress}}/api/v1/discount/{{code}}
