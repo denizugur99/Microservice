@@ -1,0 +1,17 @@
+﻿using Asp.Versioning.Builder;
+using Microservice.Discount.API.Features.Discount.CreateDiscount;
+
+
+namespace Microservice.Discount.API.Features.Discount
+{
+    public static class DiscountEndpointExt
+    {
+        public static void AddDiscountGroupEndpoints(this WebApplication app,ApiVersionSet apiVersionSet)
+        {
+            var categoryGroup = app.MapGroup("/api/v{version:apiVersion}/discount").WithTags("Discount").WithApiVersionSet(apiVersionSet)
+                .CreateDiscountEndpoint();
+               
+
+        }
+    }
+}
