@@ -17,6 +17,7 @@
     <PackageReference Include="MediatR" Version="14.0.0" />
     <PackageReference Include="NewId" Version="4.0.1" />
     <PackageReference Include="Refit.HttpClientFactory" Version="10.0.1" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.12.52" />
 	  <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 

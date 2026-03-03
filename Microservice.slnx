@@ -10,6 +10,9 @@
   <Folder Name="/src/services/discount/">
     <Project Path="Microservice.Discount.API/Microservice.Discount.API.csproj" Id="2991fc2f-6ced-4693-bfa3-bc39debfbb01" />
   </Folder>
+  <Folder Name="/src/services/file/">
+    <Project Path="Microservice.File.Api/Microservice.File.Api.csproj" Id="650a30cd-d6bd-4ecc-b19f-1fdb7f6698d5" />
+  </Folder>
   <Folder Name="/src/shared/">
     <Project Path="Shared/Microservices.Shared.csproj" Id="98da206d-4713-4a5b-8416-6bdad262c5fa" />
   </Folder>
