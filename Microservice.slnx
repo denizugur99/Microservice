@@ -13,6 +13,17 @@
   <Folder Name="/src/services/file/">
     <Project Path="Microservice.File.Api/Microservice.File.Api.csproj" Id="650a30cd-d6bd-4ecc-b19f-1fdb7f6698d5" />
   </Folder>
+  <Folder Name="/src/services/order/" />
+  <Folder Name="/src/services/order/api/">
+    <Project Path="Microservice.Order.Api/Microservice.Order.Api.csproj" Id="7f8afbdd-3632-4e72-9909-07f84d98a38e" />
+  </Folder>
+  <Folder Name="/src/services/order/core/">
+    <Project Path="Microservice.Order.Application/Microservice.Order.Application.csproj" Id="04c57a98-3366-4b86-9993-61a24c64c1ae" />
+    <Project Path="Microservice.Order.Domain/Microservice.Order.Domain.csproj" Id="d824d54b-a781-4969-9323-397b99364c7d" />
+  </Folder>
+  <Folder Name="/src/services/order/infrastructure/">
+    <Project Path="Microservice.Order.Persistence/Microservice.Order.Persistence.csproj" Id="54f94b27-364d-4a1d-b54e-f89b6376d827" />
+  </Folder>
   <Folder Name="/src/shared/">
     <Project Path="Shared/Microservices.Shared.csproj" Id="98da206d-4713-4a5b-8416-6bdad262c5fa" />
   </Folder>
