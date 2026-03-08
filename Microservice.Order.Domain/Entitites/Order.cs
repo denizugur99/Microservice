@@ -37,6 +37,20 @@ namespace Microservice.Order.Domain.Entitites
                
             };
         }
+        public static Order CreateUnPaidOrder(Guid buyerId, float? discount)
+        {
+            return new Order
+            {
+                Id = NewId.NextSequentialGuid(),
+                OrderCode = GenerateCode(),
+                Created = DateTimeOffset.UtcNow,
+                BuyerId = buyerId,
+                Discount = discount,
+                Status = OrderStatus.Pending,
+                TotalPrice = 0, // This should be calculated based on the order items and discount
+
+            };
+        }
         public void AddOrderItem(Guid productId ,string productName,decimal unitPrice)
         {
             var orderItem = new OrderItem();

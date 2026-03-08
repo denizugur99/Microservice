@@ -9,7 +9,7 @@ namespace Microservice.Discount.API.Features.Discount.CreateDiscount
         {
            groupBuilder.MapPost("/",async(CreateDiscountCommand command,IMediator mediator)=>(await mediator.Send(command)).ToGenericResult()).WithName("createDiscount")
                 .MapToApiVersion(1, 0)
-                .Produces<Guid>(StatusCodes.Status201Created).Produces<ProblemDetails>(StatusCodes.Status400BadRequest).AddEndpointFilter<ValidationFilter<CreateDiscountCommandValidator>>();
+                .Produces<Guid>(StatusCodes.Status201Created).Produces<ProblemDetails>(StatusCodes.Status400BadRequest).AddEndpointFilter<ValidationFilter<CreateDiscountCommand>>();
             return groupBuilder;
         }
     }
