@@ -54,8 +54,15 @@ namespace Microservice.Order.Domain.Entitites
         public void AddOrderItem(Guid productId ,string productName,decimal unitPrice)
         {
             var orderItem = new OrderItem();
+            
+            if(Discount.HasValue)
+            {
+                unitPrice = unitPrice * (decimal)(1 - Discount.Value / 100);
+            }
             orderItem.SetItem(productId, productName, unitPrice);
             OrderItems.Add(orderItem);
+            CalculateTotalPrice();
+           
         }
        
         public void ApplyDiscount(float discount)
@@ -77,13 +84,10 @@ namespace Microservice.Order.Domain.Entitites
             this.PaymentId = paymentId;
            
         }
-        private void CalculateTotalPrice()
+       private void CalculateTotalPrice()
         {
             TotalPrice = OrderItems.Sum(x => x.UnitPrice);
-            if (Discount.HasValue)
-            {
-                TotalPrice = TotalPrice * (decimal)(1 - Discount.Value / 100);
-            }
+   
         }
     }
 

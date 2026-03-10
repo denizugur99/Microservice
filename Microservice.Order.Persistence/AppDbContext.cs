@@ -5,9 +5,9 @@ namespace Microservice.Order.Persistence
 {
     public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
     {
-        DbSet<Domain.Entitites.Order> Orders { get; set; }
-        DbSet<Domain.Entitites.OrderItem> OrderItems { get; set; }
-        DbSet<Address> Addresses { get; set; }
+        public DbSet<Domain.Entitites.Order> Orders { get; set; }
+        public DbSet<Domain.Entitites.OrderItem> OrderItems { get; set; }
+        public DbSet<Address> Addresses { get; set; }
          protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(PersistenceAssembly).Assembly);

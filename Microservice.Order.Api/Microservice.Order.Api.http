@@ -8,7 +8,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "discount":0,
+  "discount":50,
   "address": {
     "province": "Istanbul",
     "city": "Kadikoy",
@@ -21,20 +21,26 @@ Content-Type: application/json
     "cardNumber": "4532015112830366",
     "expiration": "12/25",
     "cvv": "123",
-    "amount": 299.99
+    "amount": 5000
   },
   "orders": [
     {
       "productId": "{{productId1}}",
-      "prodcutName": "Product 1",
-      "unitPrice": 149.99
+      "productName": "Product0",
+      "unitPrice": 200
     },
     {
       "productId": "{{productId2}}",
-      "prodcutName": "Product 2",
-      "unitPrice": 149.99
+      "productName": "Product7",
+      "unitPrice": 300
     }
   ]
 }
+
+###
+
+### Get Orders
+GET {{baseUrl}}/api/v1.0/orders
+Accept: application/json
 
 ###

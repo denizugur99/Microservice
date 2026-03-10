@@ -18,7 +18,7 @@ namespace Microservice.Order.Application.Features.Orders.Create
                 order.RuleFor(x => x.ProductId)
                     .NotEmpty().WithMessage("Product ID is required");
 
-                order.RuleFor(x => x.ProdcutName)
+                order.RuleFor(x => x.ProductName)
                     .NotEmpty().WithMessage("Product name is required")
                     .MaximumLength(200).WithMessage("Product name cannot exceed 200 characters");
 

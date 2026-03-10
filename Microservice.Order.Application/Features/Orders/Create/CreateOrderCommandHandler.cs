@@ -36,9 +36,11 @@ namespace Microservice.Order.Application.Features.Orders.Create
             var order = Domain.Entitites.Order.CreateUnPaidOrder(buyerId, request.Discount, newAdress.Id);
             foreach (var item in request.Orders)
             {
-                order.AddOrderItem(item.ProductId, item.ProdcutName, item.UnitPrice);
-            }   
+                order.AddOrderItem(item.ProductId, item.ProductName, item.UnitPrice);
+            }
             order.Address = newAdress;
+          
+
             await orderRepository.AddAsync(order);
             await unitOfWork.CommitAsync(cancellationToken);
             var paymentId = Guid.Empty;

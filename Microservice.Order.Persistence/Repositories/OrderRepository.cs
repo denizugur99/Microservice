@@ -1,11 +1,13 @@
 ﻿using Microservice.Order.Application.Contracts.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.EntityFrameworkCore;
 
 namespace Microservice.Order.Persistence.Repositories
 {
-    public class OrderRepository(AppDbContext context):GenericRepository<Guid, Order.Domain.Entitites.Order>(context),IOrderRepository 
+    public class OrderRepository(AppDbContext _context):GenericRepository<Guid, Domain.Entitites.Order>(_context),IOrderRepository 
     {
+        public Task<List<Domain.Entitites.Order>> GetOrderBuyerId(Guid buyerId)
+        {
+            return _context.Orders.Include(x => x.OrderItems).Where(x => x.BuyerId == buyerId).OrderByDescending(x => x.Created).ToListAsync();
+        }
     }
 }
