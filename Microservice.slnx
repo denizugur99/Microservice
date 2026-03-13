@@ -13,6 +13,9 @@
   <Folder Name="/src/services/file/">
     <Project Path="Microservice.File.Api/Microservice.File.Api.csproj" Id="650a30cd-d6bd-4ecc-b19f-1fdb7f6698d5" />
   </Folder>
+  <Folder Name="/src/services/gateway/">
+    <Project Path="Microservice.Gateway/Microservice.Gateway.csproj" Id="b03d9a71-527c-4bb0-920d-8f51ee7bfb8b" />
+  </Folder>
   <Folder Name="/src/services/order/" />
   <Folder Name="/src/services/order/api/">
     <Project Path="Microservice.Order.Api/Microservice.Order.Api.csproj" Id="7f8afbdd-3632-4e72-9909-07f84d98a38e" />
