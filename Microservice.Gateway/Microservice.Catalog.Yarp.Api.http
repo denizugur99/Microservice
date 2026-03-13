@@ -1,0 +1,82 @@
+@Microservice.Catalog.Api_HostAddress = http://localhost:5093
+@categoryId = 08de6f12-7c92-bd9b-00d8-61bd5a580000
+@courseId = 08de6cd5-a690-75ac-00d8-61bd5a580000
+@userId = 898688f4-de46-415f-a393-9e73b8fb3bd1
+
+### Get All Categories
+GET {{Microservice.Catalog.Api_HostAddress}}/v1/categories
+Accept: application/json
+
+###
+
+### Get Category By Id
+GET {{Microservice.Catalog.Api_HostAddress}}/v1/categories/{{categoryId}}
+Accept: application/json
+
+###
+
+### Create Category
+POST {{Microservice.Catalog.Api_HostAddress}}/v1/categories
+Accept: application/json
+Content-Type: application/json
+
+{
+  "categoryName": "Programming"
+}
+
+###
+
+### Get All Courses
+GET {{Microservice.Catalog.Api_HostAddress}}/v1/course
+Accept: application/json
+
+###
+
+### Get Course By Id
+GET {{Microservice.Catalog.Api_HostAddress}}/v1/course/{{courseId}}
+Accept: application/json
+
+###
+
+### Get Courses By User Id
+GET {{Microservice.Catalog.Api_HostAddress}}/v1/course/user/{{userId}}
+Accept: application/json
+
+###
+
+### Create Course
+POST {{Microservice.Catalog.Api_HostAddress}}/v1/course
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "ASP.NET Core Microservices",
+  "description": "Learn how to build microservices with ASP.NET Core",
+  "imageUrl": "http://example.com/image.jpg",
+  "price": 199.99,
+  "categoryId": "{{categoryId}}"
+}
+
+###
+
+### Update Course
+PUT {{Microservice.Catalog.Api_HostAddress}}/v1/course
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": "{{courseId}}",
+  "name": "ASP.NET Core Microservices - Updated",
+  "description": "Learn how to build microservices with ASP.NET Core - Updated Version",
+  "imageUrl": "http://example.com/image2.jpg",
+  "price": 249.99,
+  "categoryId": "{{categoryId}}"
+}
+
+###
+
+### Delete Course
+DELETE {{Microservice.Catalog.Api_HostAddress}}/v1/course/{{courseId}}
+Accept: application/json
+
+###

@@ -1,0 +1,44 @@
+@Microservice.Basket.Api_HostAddress = http://localhost:5093
+@courseId = 08de6cd5-a690-75ac-00d8-61bd5a580020
+
+### Get Basket
+GET {{Microservice.Basket.Api_HostAddress}}/v1/baskets/user
+Accept: application/json
+
+###
+
+### Add Item to Basket
+POST {{Microservice.Basket.Api_HostAddress}}/v1/baskets/item
+Accept: application/json
+Content-Type: application/json
+
+{
+  "courseId": "08de6cd5-a690-75ac-00d8-61bd5a580020",
+  "courseName": "Test Course",
+  "coursePrice": 99.99,
+  "imageUrl": "https://example.com/image.jpg"
+}
+
+###
+
+### Delete Item from Basket
+DELETE {{Microservice.Basket.Api_HostAddress}}/v1/baskets/item/{{courseId}}
+
+###
+
+### Apply Discount Coupon to Basket
+PUT {{Microservice.Basket.Api_HostAddress}}/v1/baskets/discount
+Accept: application/json
+Content-Type: application/json
+
+{
+  "coupon": "SUMMER2024",
+  "rate": 0.30
+}
+
+###
+
+### Remove Discount from Basket
+DELETE {{Microservice.Basket.Api_HostAddress}}/v1/baskets/discount
+
+###

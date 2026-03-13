@@ -1,0 +1,50 @@
+@Microservice.Discount.Api_HostAddress = http://localhost:5093
+@code = DISCOUNT15
+
+### Get Discount By Code
+GET {{Microservice.Discount.Api_HostAddress}}/v1/discount/{{code}}
+Accept: application/json
+
+###
+
+### Create Discount
+POST {{Microservice.Discount.Api_HostAddress}}/v1/discount
+Accept: application/json
+Content-Type: application/json
+
+{
+  "code": "DISCOUNT15",
+  "rate": 0.15,
+  "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "expireDate": "2026-12-31T23:59:59Z"
+}
+
+###
+
+### Create Discount - Higher Rate
+POST {{Microservice.Discount.Api_HostAddress}}/v1/discount
+Accept: application/json
+Content-Type: application/json
+
+{
+  "code": "SUMMER50",
+  "rate": 0.50,
+  "userId": "898688f4-de46-415f-a393-9e73b8fb3bd1",
+  "expireDate": "2026-08-31T23:59:59Z"
+}
+
+###
+
+### Create Discount - Invalid Rate (Validation Error)
+POST {{Microservice.Discount.Api_HostAddress}}/v1/discount
+Accept: application/json
+Content-Type: application/json
+
+{
+  "code": "INVALID",
+  "rate": 1.5,
+  "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "expireDate": "2026-12-31T23:59:59Z"
+}
+
+###

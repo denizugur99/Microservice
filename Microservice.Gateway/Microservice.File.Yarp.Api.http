@@ -1,0 +1,38 @@
+@Microservice.File.Api_HostAddress = http://localhost:5093
+
+### Upload File
+POST {{Microservice.File.Api_HostAddress}}/v1/files/
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="test.txt"
+Content-Type: text/plain
+
+This is a test file content for microservices demo.
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+### Upload File - Image
+POST {{Microservice.File.Api_HostAddress}}/v1/files/
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="image.jpg"
+Content-Type: image/jpeg
+
+<binary content here>
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
+### Delete File
+DELETE {{Microservice.File.Api_HostAddress}}/v1/files/
+Accept: application/json
+Content-Type: application/json
+
+{
+  "fileName": "662cd5c7-85c8-4ac2-8e32-9f50f288c972.txt"
+}
+
+###

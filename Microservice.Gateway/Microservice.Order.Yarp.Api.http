@@ -1,0 +1,114 @@
+@Microservice.Order.Api_HostAddress = http://localhost:5093
+@productId1 = 08de6cd5-a690-75ac-00d8-61bd5a580001
+@productId2 = 08de6cd5-a690-75ac-00d8-61bd5a580002
+
+### Get All Orders
+GET {{Microservice.Order.Api_HostAddress}}/v1/orders
+Accept: application/json
+
+###
+
+### Create Order
+POST {{Microservice.Order.Api_HostAddress}}/v1/orders
+Accept: application/json
+Content-Type: application/json
+
+{
+  "discount": 50,
+  "address": {
+    "province": "Istanbul",
+    "city": "Kadikoy",
+    "region": "Marmara",
+    "street": "Caferaga Mahallesi, Moda Caddesi No:123",
+    "postalCode": "34710"
+  },
+  "payment": {
+    "cardName": "John Doe",
+    "cardNumber": "4532015112830366",
+    "expiration": "12/25",
+    "cvv": "123",
+    "amount": 5000
+  },
+  "orders": [
+    {
+      "productId": "{{productId1}}",
+      "productName": "ASP.NET Core Course",
+      "unitPrice": 200
+    },
+    {
+      "productId": "{{productId2}}",
+      "productName": "Microservices Course",
+      "unitPrice": 300
+    }
+  ]
+}
+
+###
+
+### Create Order - Multiple Items
+POST {{Microservice.Order.Api_HostAddress}}/v1/orders
+Accept: application/json
+Content-Type: application/json
+
+{
+  "discount": 100,
+  "address": {
+    "province": "Ankara",
+    "city": "Cankaya",
+    "region": "Central Anatolia",
+    "street": "Kizilirmak Mahallesi, Dumlupinar Bulvari No:45",
+    "postalCode": "06510"
+  },
+  "payment": {
+    "cardName": "Jane Smith",
+    "cardNumber": "5425233430109903",
+    "expiration": "06/27",
+    "cvv": "456",
+    "amount": 7500
+  },
+  "orders": [
+    {
+      "productId": "08de6cd5-a690-75ac-00d8-61bd5a580003",
+      "productName": "Docker Course",
+      "unitPrice": 150
+    },
+    {
+      "productId": "08de6cd5-a690-75ac-00d8-61bd5a580004",
+      "productName": "Kubernetes Course",
+      "unitPrice": 250
+    },
+    {
+      "productId": "08de6cd5-a690-75ac-00d8-61bd5a580005",
+      "productName": "CI/CD Course",
+      "unitPrice": 180
+    }
+  ]
+}
+
+###
+
+### Create Order - Invalid Payment Info (Validation Error)
+POST {{Microservice.Order.Api_HostAddress}}/v1/orders
+Accept: application/json
+Content-Type: application/json
+
+{
+  "discount": 0,
+  "address": {
+    "province": "",
+    "city": "",
+    "region": "",
+    "street": "",
+    "postalCode": ""
+  },
+  "payment": {
+    "cardName": "",
+    "cardNumber": "1111222233334444",
+    "expiration": "13/99",
+    "cvv": "12",
+    "amount": -100
+  },
+  "orders": []
+}
+
+###
