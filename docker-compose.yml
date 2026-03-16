@@ -81,9 +81,46 @@ services:
     volumes:
       - sqlserver_order_data:/var/opt/mssql
 
+  postgres.db.keycloak:
+    image: postgres:16-alpine
+    container_name: postgres-keycloak
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_keycloak_data:/var/lib/postgresql/data
+
+  keycloak.auth:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    restart: always
+    command: start-dev
+    ports:
+      - "8080:8080"
+    environment:
+      KC_HOSTNAME_PORT: 8080
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KC_HOSTNAME_STRICT_BACKCHANNEL: false
+      KC_HTTP_ENABLED: true
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_HEALTH_ENABLED: true
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres.db.keycloak:5432/${POSTGRES_DB}
+      KC_DB_USERNAME: ${POSTGRES_USER}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      - postgres.db.keycloak
+
 volumes:
   mongodb_data:
   mongodb_discount_data:
   redis_data:
   sqlserver_order_data:
+  postgres_keycloak_data:
 
