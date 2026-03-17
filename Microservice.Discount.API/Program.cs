@@ -13,17 +13,21 @@ builder.Services.AddVersionExt();
 builder.Services.AddOptionsExt();
 builder.Services.AddDatabaseExt();
 builder.Services.AddCommonServiceExt(typeof(DiscountAssembly));
+builder.Services.AddAuthenticationExt(builder.Configuration);
 
 var app = builder.Build();
-app.AddDiscountGroupEndpoints(app.AddVersionSetExt());
 
 // Configure the HTTP request pipeline.
+app.UseAuthentication();
+app.UseAuthorization();
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
 
+app.AddDiscountGroupEndpoints(app.AddVersionSetExt());
 
 app.Run();
 

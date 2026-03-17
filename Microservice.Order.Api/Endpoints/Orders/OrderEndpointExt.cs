@@ -9,7 +9,7 @@ namespace Microservice.Order.Api.Endpoints.Orders
         {
         var categoryGroup = app.MapGroup("/api/v{version:apiVersion}/orders").WithTags("Orders").WithApiVersionSet(apiVersionSet)
         .CreateOrderGroupItemEndpoint()
-        .GetOrdersGroupItemEndpoint();
+        .GetOrdersGroupItemEndpoint().RequireAuthorization("Password");
 
 
         }

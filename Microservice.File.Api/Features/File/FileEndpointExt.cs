@@ -11,7 +11,7 @@ namespace Microservice.Discount.API.Features.Discount
         {
             var categoryGroup = app.MapGroup("/api/v{version:apiVersion}/files").WithTags("Files").WithApiVersionSet(apiVersionSet)
                 .UploadFileEndpoint()
-                .DeleteFileEndpoint();
+                .DeleteFileEndpoint().RequireAuthorization("ClientCredential");
 
 
 

@@ -15,14 +15,19 @@ builder.Services.AddStackExchangeRedisCache(opt =>
 });
 builder.Services.AddScoped<BasketService>();
 builder.Services.AddVersionExt();
+builder.Services.AddAuthenticationExt(builder.Configuration);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseAuthentication();
+app.UseAuthorization();
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
+
 app.AddBasketGroupEndpoints(app.AddVersionSetExt());
 
 app.Run();

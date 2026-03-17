@@ -11,6 +11,8 @@ namespace Microservice.Payment.Api.Feature.Get
         public async Task<ServiceResult<List<GetAllPaymentsByUserIdResponse>>> Handle(GetAllPaymentsByUserIdQuery request, CancellationToken cancellationToken)
         {
             var userId = identityService.GetUserId;
+            var userName = identityService.GetUserName;
+            var userRoles = identityService.Roles;
             var payments = await context.Payments.Where(p => p.UserId == userId).Select(p => new GetAllPaymentsByUserIdResponse(
 
              p.Id,

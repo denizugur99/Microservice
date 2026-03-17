@@ -16,7 +16,7 @@ namespace Microservice.Basket.Api.Features.Baskets
                 .AddBasketGroupItemEndpoint()
                 .DeleteBasketGroupItemEndpoint()
                 .ApplyDiscountCouponGroupEndpoint()
-                .RemoveDiscountGroupEndpoint();
+                .RemoveDiscountGroupEndpoint().RequireAuthorization("Password");
 
         }
     }

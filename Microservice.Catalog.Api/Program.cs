@@ -11,6 +11,7 @@ builder.Services.AddOptionsExt();
 builder.Services.AddDatabaseExt();
 builder.Services.AddCommonServiceExt(typeof(CatalogAssembly));
 builder.Services.AddVersionExt();
+builder.Services.AddAuthenticationExt(builder.Configuration);
 
 
 // Add services to the container.
@@ -27,15 +28,20 @@ app.AddSeedDataExt().ContinueWith(x =>
         Console.WriteLine("Seed data has been saved to DB");
     }
 });
-app.AddCategoryGroupEndpoints(app.AddVersionSetExt());
-app.AddCourseGroupEndpoints(app.AddVersionSetExt());
+
 // Configure the HTTP request pipeline.
+app.UseAuthentication();
+app.UseAuthorization();
+
 if (app.Environment.IsDevelopment())
 {
-    
+
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
+
+app.AddCategoryGroupEndpoints(app.AddVersionSetExt());
+app.AddCourseGroupEndpoints(app.AddVersionSetExt());
 
 
 

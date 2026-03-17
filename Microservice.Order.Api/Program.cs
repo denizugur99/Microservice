@@ -26,19 +26,24 @@ builder.Services.AddVersionExt();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddAuthenticationExt(builder.Configuration);
 
 
 
 
 var app = builder.Build();
-app.AddOrderGroupEndpoints(app.AddVersionSetExt());
+
 // Configure the HTTP request pipeline.
+app.UseAuthentication();
+app.UseAuthorization();
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
 
+app.AddOrderGroupEndpoints(app.AddVersionSetExt());
 
 app.Run();
 

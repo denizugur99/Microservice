@@ -17,7 +17,7 @@ namespace Microservices.Shared.Extensions
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining(assembly);
             services.AddAutoMapper(x=>x.AddMaps(assembly));
-            services.AddScoped<IIdentityService, IıdentityServiceFake>();
+            services.AddScoped<IIdentityService, IdentityService>();
             return services;
         }
     }

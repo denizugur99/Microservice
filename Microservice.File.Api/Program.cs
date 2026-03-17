@@ -12,17 +12,22 @@ builder.Services.AddOpenApi();
 builder.Services.AddVersionExt();
 builder.Services.AddCommonServiceExt(typeof(FileAssembly));
 builder.Services.AddSingleton<IFileProvider>( new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
+builder.Services.AddAuthenticationExt(builder.Configuration);
 
 var app = builder.Build();
-app.UseStaticFiles();
-app.AddFileGroupEndpoints(app.AddVersionSetExt());
+
 // Configure the HTTP request pipeline.
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseStaticFiles();
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
 
+app.AddFileGroupEndpoints(app.AddVersionSetExt());
 
 
 app.Run();

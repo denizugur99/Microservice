@@ -11,7 +11,7 @@ namespace Microservice.Discount.API.Features.Discount
         {
             var categoryGroup = app.MapGroup("/api/v{version:apiVersion}/discount").WithTags("Discount").WithApiVersionSet(apiVersionSet)
                 .CreateDiscountEndpoint()
-                .GetDiscountEndpoint();
+                .GetDiscountEndpoint().RequireAuthorization("Password");
 
 
         }

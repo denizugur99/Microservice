@@ -16,18 +16,22 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseInMemoryDatabase("PaymentDb");
 });
+builder.Services.AddAuthenticationExt(builder.Configuration);
+
 
 var app = builder.Build();
 
-app.AddPaymentGroupEndpoints(app.AddVersionSetExt());
-
 // Configure the HTTP request pipeline.
+app.UseAuthentication();
+app.UseAuthorization();
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
     app.MapScalarApiReference();
 }
 
+app.AddPaymentGroupEndpoints(app.AddVersionSetExt());
 
 
 app.Run();
