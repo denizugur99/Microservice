@@ -1,3 +1,4 @@
+using Microservice.Bus;
 using Microservice.Order.Api;
 using Microservice.Order.Api.Endpoints.Orders;
 using Microservice.Order.Application;
@@ -16,6 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddCommonServiceExt(typeof(OrderApplicationAssembly));
+builder.Services.AddMassTransitExt(builder.Configuration);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {

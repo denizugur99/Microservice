@@ -7,9 +7,9 @@ namespace Microservice.Catalog.Api.Features.Courses.Create
     {
         public static RouteGroupBuilder CreateCourseEndpoint(this RouteGroupBuilder groupBuilder)
         {
-           groupBuilder.MapPost("/",async(CreateCourseCommand command,IMediator mediator)=>(await mediator.Send(command)).ToGenericResult()).WithName("createCourse")
+           groupBuilder.MapPost("/",async([FromForm]CreateCourseCommand command,IMediator mediator)=>(await mediator.Send(command)).ToGenericResult()).WithName("createCourse")
                 .MapToApiVersion(1, 0)
-                .Produces<Guid>(StatusCodes.Status201Created).Produces(StatusCodes.Status404NotFound).Produces<ProblemDetails>(StatusCodes.Status400BadRequest).AddEndpointFilter<ValidationFilter<CreateCourseCommand>>();
+                .Produces<Guid>(StatusCodes.Status201Created).Produces(StatusCodes.Status404NotFound).Produces<ProblemDetails>(StatusCodes.Status400BadRequest).AddEndpointFilter<ValidationFilter<CreateCourseCommand>>().DisableAntiforgery();
             return groupBuilder;
         }
     }

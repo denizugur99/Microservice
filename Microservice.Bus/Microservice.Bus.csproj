@@ -7,8 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Microservice.Bus\Microservice.Bus.csproj" />
-    <ProjectReference Include="..\Microservice.Order.Domain\Microservice.Order.Domain.csproj" />
+    <PackageReference Include="MassTransit.AspNetCore" Version="7.3.1" />
+    <PackageReference Include="MassTransit.Kafka" Version="9.0.1" />
+	  <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
 </Project>

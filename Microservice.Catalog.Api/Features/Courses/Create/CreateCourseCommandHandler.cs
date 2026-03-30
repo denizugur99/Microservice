@@ -1,6 +1,8 @@
-﻿namespace Microservice.Catalog.Api.Features.Courses.Create
+﻿using Microservice.Bus.Comnmands;
+
+namespace Microservice.Catalog.Api.Features.Courses.Create
 {
-    public class CreateCourseCommandHandler(AppDbContext context,IMapper mapper) : IRequestHandler<CreateCourseCommand, ServiceResult<Guid>>
+    public class CreateCourseCommandHandler(AppDbContext context,IMapper mapper,IServiceProvider serviceProvider) : IRequestHandler<CreateCourseCommand, ServiceResult<Guid>>
     {
         public async Task<ServiceResult<Guid>> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
         {
@@ -25,6 +27,21 @@
             };
             context.Courses.Add(newCourse);
             await context.SaveChangesAsync(cancellationToken);
+
+            if (request.Picture is not null)
+            {
+                using var memoryStream = new MemoryStream();
+
+                await request.Picture.CopyToAsync(memoryStream, cancellationToken);
+                var PictureAsByteArray=memoryStream.ToArray();
+                var  uploadCoursePictureCommand = new UploadCoursePictureCommand(newCourse.Id, PictureAsByteArray,request.Picture.FileName);
+
+                // Scope oluştur ve producer'ı al
+                using var scope = serviceProvider.CreateScope();
+                var producer = scope.ServiceProvider.GetRequiredService<ITopicProducer<UploadCoursePictureCommand>>();
+                await producer.Produce(uploadCoursePictureCommand, cancellationToken);
+
+            }
             return ServiceResult<Guid>.SuccesAsCreated(newCourse.Id, $"/api/courses/{newCourse.Id}");
 
         }

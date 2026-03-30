@@ -31,6 +31,7 @@
     <Project Path="Microservice.Payment.Api/Microservice.Payment.Api.csproj" Id="46982d92-c03a-4fdf-b9bc-19a8c83a2742" />
   </Folder>
   <Folder Name="/src/shared/">
+    <Project Path="Microservice.Bus/Microservice.Bus.csproj" Id="883a95b3-becc-4391-9b0c-78a78d02627d" />
     <Project Path="Shared/Microservices.Shared.csproj" Id="98da206d-4713-4a5b-8416-6bdad262c5fa" />
   </Folder>
   <Project Path="docker-compose.dcproj">

@@ -1,3 +1,4 @@
+using Microservice.Bus;
 using Microservice.Payment.Api;
 using Microservice.Payment.Api.Feature.Payments;
 using Microservice.Payment.Api.Repositories;
@@ -12,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddVersionExt();
 builder.Services.AddCommonServiceExt(typeof(PaymentAssembly));
+builder.Services.AddMassTransitExt(builder.Configuration);
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseInMemoryDatabase("PaymentDb");

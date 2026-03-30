@@ -1,4 +1,4 @@
-﻿using MassTransit;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Reflection.Emit;
@@ -20,13 +20,13 @@ namespace Microservice.Order.Domain.Entitites
         public Address Address { get; set; }=null!;
         public static string GenerateCode()
         {
-            return NewId.NextSequentialGuid().ToString();
+            return Guid.CreateVersion7().ToString();
         }
         public static Order CreateUnPaidOrder(Guid buyerId,float? discount,int addresId)
         {
             return new Order
             {
-                Id=NewId.NextSequentialGuid(),
+                Id = Guid.CreateVersion7(),
                 OrderCode = GenerateCode(),
                 Created = DateTimeOffset.UtcNow,
                 BuyerId = buyerId,
@@ -34,14 +34,14 @@ namespace Microservice.Order.Domain.Entitites
                 Status = OrderStatus.Pending,
                 AddressId = addresId,
                 TotalPrice = 0, // This should be calculated based on the order items and discount
-               
+
             };
         }
         public static Order CreateUnPaidOrder(Guid buyerId, float? discount)
         {
             return new Order
             {
-                Id = NewId.NextSequentialGuid(),
+                Id = Guid.CreateVersion7(),
                 OrderCode = GenerateCode(),
                 Created = DateTimeOffset.UtcNow,
                 BuyerId = buyerId,

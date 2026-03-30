@@ -7,9 +7,13 @@ namespace Microservice.Basket.Api.Features.Baskets
 {
     public class BasketService(IIdentityService ıdentityService, IDistributedCache distributedCache)
     {
-       private string GetCacheKey()
+        private string GetCacheKey()
         {
             return string.Format(BasketConst.BasketCacheKey, ıdentityService.GetUserId);
+        }
+        private string GetCacheKey(Guid userId)
+        {
+            return string.Format(BasketConst.BasketCacheKey, userId);
         }
 
         public async Task<string?> GetBasketJsonFromCache(CancellationToken cancellationToken)
@@ -31,6 +35,10 @@ namespace Microservice.Basket.Api.Features.Baskets
         {
             var jsonBasket = JsonSerializer.Serialize(basket);
             await distributedCache.SetStringAsync(GetCacheKey(), jsonBasket, cancellationToken);
+        }
+        public async Task DeleteBasketAsync(Guid userId)
+        {
+            await distributedCache.RemoveAsync(GetCacheKey(userId));
         }
     }
 }

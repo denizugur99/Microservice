@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Microservice.Bus\Microservice.Bus.csproj" />
     <ProjectReference Include="..\Shared\Microservices.Shared.csproj" />
   </ItemGroup>
 

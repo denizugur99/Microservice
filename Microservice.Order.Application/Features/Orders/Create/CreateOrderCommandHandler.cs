@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using MassTransit;
+using MediatR;
+using Microservice.Bus.Events;
 using Microservice.Order.Application.Contracts.Repositories;
 using Microservice.Order.Application.Contracts.UnitOfWorks;
 using Microservice.Order.Domain.Entitites;
@@ -11,7 +13,7 @@ using System.Text;
 
 namespace Microservice.Order.Application.Features.Orders.Create
 {
-    public class CreateOrderCommandHandler(IOrderRepository orderRepository,IGenericRepository<int,Address> addressRepository,IIdentityService identityService,IUnitOfWork unitOfWork) : IRequestHandler<CreateOrderComand, ServiceResult>
+    public class CreateOrderCommandHandler(IOrderRepository orderRepository,IGenericRepository<int,Address> addressRepository,IIdentityService identityService,IUnitOfWork unitOfWork,ITopicProducer<OrderCreatedEvent> topicProducer) : IRequestHandler<CreateOrderComand, ServiceResult>
     {
         public async Task<ServiceResult> Handle(CreateOrderComand request, CancellationToken cancellationToken)
         {
@@ -51,7 +53,7 @@ namespace Microservice.Order.Application.Features.Orders.Create
             await unitOfWork.CommitAsync(cancellationToken);
 
 
-
+            await topicProducer.Produce(new OrderCreatedEvent(order.Id,identityService.GetUserId));
             return ServiceResult.SuccesAsNoContent();
             // Artık order metodlarını çağırabilirsiniz:
             // order.AddOrderItem(productId, productName, unitPrice);
