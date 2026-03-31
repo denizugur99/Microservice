@@ -119,6 +119,7 @@ services:
   kafka:
     image: apache/kafka:latest
     container_name: kafka-1
+    restart: always
     ports:
       - "9092:9092"
       - "9094:9094"
@@ -147,6 +148,7 @@ services:
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: true
   kafka-ui:
     container_name: kafka-ui
+    restart: always
     image: provectuslabs/kafka-ui:v0.7.2
     ports:
       - 8084:8080
