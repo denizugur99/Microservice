@@ -16,7 +16,7 @@ namespace Microservice.Payment.Api.Feature.Get
                 .MapToApiVersion(1, 0)
                 .Produces(StatusCodes.Status200OK)
                 .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
-                .Produces<ProblemDetails>(StatusCodes.Status404NotFound);
+                .Produces<ProblemDetails>(StatusCodes.Status404NotFound).RequireAuthorization("ClientCredential");
 
             return groupBuilder;
         }

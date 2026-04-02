@@ -9,5 +9,7 @@ namespace Microservice.Order.Application.Contracts.Refit.PaymentService
     {
         [Post("/api/v1/payments")]
         Task<CreatePaymentResponse> CreatePaymentAsync(CreatePaymentRequest request);
+        [Get("/api/v1/payments/status/{orderCode}")]
+        Task<GetPaymentStatusResponse> GetPaymentAsync(string orderCode);
     }
 }

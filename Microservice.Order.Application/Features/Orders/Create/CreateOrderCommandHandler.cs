@@ -1,6 +1,7 @@
 ﻿using MassTransit;
 using MediatR;
 using Microservice.Bus.Events;
+using Microservice.Order.Application.Contracts.Refit.PaymentService;
 using Microservice.Order.Application.Contracts.Repositories;
 using Microservice.Order.Application.Contracts.UnitOfWorks;
 using Microservice.Order.Domain.Entitites;
@@ -13,7 +14,7 @@ using System.Text;
 
 namespace Microservice.Order.Application.Features.Orders.Create
 {
-    public class CreateOrderCommandHandler(IOrderRepository orderRepository,IGenericRepository<int,Address> addressRepository,IIdentityService identityService,IUnitOfWork unitOfWork,ITopicProducer<OrderCreatedEvent> topicProducer) : IRequestHandler<CreateOrderComand, ServiceResult>
+    public class CreateOrderCommandHandler(IOrderRepository orderRepository,IGenericRepository<int,Address> addressRepository,IIdentityService identityService,IUnitOfWork unitOfWork,ITopicProducer<OrderCreatedEvent> topicProducer,IPaymentService paymentService) : IRequestHandler<CreateOrderComand, ServiceResult>
     {
         public async Task<ServiceResult> Handle(CreateOrderComand request, CancellationToken cancellationToken)
         {
@@ -45,10 +46,15 @@ namespace Microservice.Order.Application.Features.Orders.Create
 
             await orderRepository.AddAsync(order);
             await unitOfWork.CommitAsync(cancellationToken);
-            var paymentId = Guid.Empty;
 
-            //payment
-            order.MarkAsPaid(paymentId);
+            CreatePaymentRequest createPaymentRequest = new CreatePaymentRequest(order.OrderCode, request.Payment.CardNumber, request.Payment.CardName, request.Payment.Expiration, request.Payment.CVV, order.TotalPrice);
+            var paymentResponse=await paymentService.CreatePaymentAsync(createPaymentRequest);
+            var paymentId = Guid.Empty;
+            if (paymentResponse.Status == false)
+                return ServiceResult.Error(paymentResponse.ErrorMessage!, HttpStatusCode.InternalServerError);
+
+          
+            order.MarkAsPaid(paymentResponse.PaymentId!.Value);
             orderRepository.Update(order);
             await unitOfWork.CommitAsync(cancellationToken);
 

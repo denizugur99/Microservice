@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddVersionExt();
 builder.Services.AddCommonServiceExt(typeof(PaymentAssembly));
-builder.Services.AddMassTransitExt(builder.Configuration);
+
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseInMemoryDatabase("PaymentDb");

@@ -17,7 +17,7 @@ namespace Microservice.Payment.Api.Feature.Payments.Create
                 .AddEndpointFilter<ValidationFilter<CreatePaymentCommand>>()
                 .Produces(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status400BadRequest)
-                .Produces(StatusCodes.Status404NotFound);
+                .Produces(StatusCodes.Status404NotFound).RequireAuthorization("Password");
 
             return groupBuilder;
         }
