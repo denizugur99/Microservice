@@ -2,17 +2,44 @@
 
 namespace MicroserviceWebApp.Pages.Auth.SignUp
 {
-    public record SignUpViewModel(
-        [Display(Name = "Username")] string User,
-        [Display(Name = "First Name")] string FirstName,
-        [Display(Name = "Last Name")] string LastName,
-        [Display(Name = "Email")] string Email,
-        [Display(Name = "Password")] string Password,
-        [Display(Name = "Password Confirm")] string ConfirmPassword
-    )
+    public record SignUpViewModel
     {
-        public static SignUpViewModel Empty => new(string.Empty,string.Empty, string.Empty, string.Empty, string.Empty, string.Empty);
-        public static SignUpViewModel GetExampleModel=> new("jhonny","John", "Doe", "denougur0@gmail.com", "Password123", "Password123");
+        [Display(Name = "Username")]
+        [Required(ErrorMessage = "Username is required")]
+        public string User { get; init; } = string.Empty;
+
+        [Display(Name = "First Name")]
+        [Required(ErrorMessage = "First Name is required")]
+        public string FirstName { get; init; } = string.Empty;
+
+        [Display(Name = "Last Name")]
+        [Required(ErrorMessage = "Last name is required")]
+        public string LastName { get; init; } = string.Empty;
+
+        [Display(Name = "Email")]
+        [EmailAddress(ErrorMessage = "Invalid Email")]
+        [Required(ErrorMessage = "Email is required")]
+        public string Email { get; init; } = string.Empty;
+
+        [Display(Name = "Password")]
+        [Required(ErrorMessage = "Password is required")]
+        public string Password { get; init; } = string.Empty;
+
+        [Display(Name = "Password Confirm")]
+        [Required(ErrorMessage = "Confirm Password is required")]
+        [Compare(nameof(Password), ErrorMessage = "Passwords do not match")]
+        public string ConfirmPassword { get; init; } = string.Empty;
+
+        public static SignUpViewModel Empty => new();
+        public static SignUpViewModel GetExampleModel => new()
+        {
+            User = "jhonny",
+            FirstName = "John",
+            LastName = "Doe",
+            Email = "denougur0@gmail.com",
+            Password = "Password123",
+            ConfirmPassword = "Password123"
+        };
     }
 
    

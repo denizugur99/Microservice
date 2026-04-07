@@ -5,20 +5,27 @@ using Microsoft.AspNetCore.Identity;
 
 namespace MicroserviceWebApp.Pages.Auth.SignUp
 {
+    public record KeyCloakError(string ErrorMessage);
 
     public class SignUpService(IdentityOption identityOption, HttpClient httpClient,ILogger<SignUpService>logger)
     {
         public async Task<ServiceResult> CreateAccount(SignUpViewModel model)
         {
             var token = await GetClientCredentialTokenAsAdmin();
-            var address = $"{identityOption.Admin.BaseAddress}/admin/realms/microserviceTenant/users";
+            var address = $"{identityOption.BaseAddress}/admin/realms/microserviceTenant/users";
             httpClient.SetBearerToken(token);
             var userCreateRequest = CreateUserRequest(model);
             var response = await httpClient.PostAsJsonAsync(address, userCreateRequest);
             if (!response.IsSuccessStatusCode)
             {
-                var errorContent = await response.Content.ReadAsStringAsync();
-                logger.LogError(errorContent);
+                if (response.StatusCode != System.Net.HttpStatusCode.InternalServerError)
+                {
+                    var errorContent = await response.Content.ReadFromJsonAsync<KeyCloakError>();
+
+                    return ServiceResult.Error("Account Creation Failed", errorContent!.ErrorMessage);
+                }
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                logger.LogError(errorMessage);
                 return ServiceResult.Error("Account Creation Failed", "An error occurred while creating the account. Please try again later.");
 
             }
@@ -36,14 +43,14 @@ namespace MicroserviceWebApp.Pages.Auth.SignUp
         {
             var discoveryRequest = new DiscoveryDocumentRequest()
             {
-                Address = identityOption.Admin.Address,
+                Address = identityOption.Address,
                 Policy =
                     {
                         RequireHttps=false
                     }
             };
             var client = httpClient;
-            client.BaseAddress = new Uri(identityOption.Admin.Address);
+            client.BaseAddress = new Uri(identityOption.Address);
             var discoveryResponse = await client.GetDiscoveryDocumentAsync();
             if (discoveryResponse.IsError)
             {

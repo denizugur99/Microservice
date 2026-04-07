@@ -17,16 +17,27 @@ namespace MicroserviceWebApp.Pages.Auth
         }
         public async Task<IActionResult> OnPostAsync()
         {
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
             var result =await signUpService.CreateAccount(Input);
             if (result.IsFail)
             {
+                if (!string.IsNullOrEmpty(result.ProblemDetails.Title))
+                {
+                    ModelState.AddModelError(string.Empty, result.ProblemDetails.Title);
+                }
+                if(!string.IsNullOrEmpty(result.ProblemDetails.Detail))
+                {
+                    ModelState.AddModelError(string.Empty, result.ProblemDetails.Detail);
+                }
                 return Page();
 
             }
-            else
-            {
+
                 return RedirectToPage("/Index");
-            }
+
         }
 
       
