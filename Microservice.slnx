@@ -34,6 +34,9 @@
     <Project Path="Microservice.Bus/Microservice.Bus.csproj" Id="883a95b3-becc-4391-9b0c-78a78d02627d" />
     <Project Path="Shared/Microservices.Shared.csproj" Id="98da206d-4713-4a5b-8416-6bdad262c5fa" />
   </Folder>
+  <Folder Name="/src/ui/">
+    <Project Path="MicroserviceWebApp/MicroserviceWebApp.csproj" Id="e99e6b75-f336-41d4-bc06-7a5e0a0b60e0" />
+  </Folder>
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>

@@ -1,0 +1,65 @@
+﻿@page
+@model MicroserviceWebApp.Pages.Auth.SignUpModel
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Kayıt Ol</h2>
+
+                    <form method="post">
+                        <div class="mb-3">
+                            <label asp-for="Input.User" class="form-label">Kullanıcı Nicki</label>
+                            <input asp-for="Input.User" class="form-control" placeholder="Kullanıcı adınızı girin" />
+                            <span asp-validation-for="Input.User" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.FirstName" class="form-label">Kullanıcı Adı</label>
+                            <input asp-for="Input.FirstName" class="form-control" placeholder="Kullanıcı adınızı girin" />
+                            <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.LastName" class="form-label">Kullanıcı Adı</label>
+                            <input asp-for="Input.LastName" class="form-control" placeholder="Kullanıcı adınızı girin" />
+                            <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Email" class="form-label">E-posta</label>
+                            <input asp-for="Input.Email" class="form-control" placeholder="E-posta adresinizi girin" />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Password" class="form-label">Şifre</label>
+                            <input asp-for="Input.Password" class="form-control" placeholder="Şifrenizi girin" />
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.ConfirmPassword" class="form-label">Şifre Onayı</label>
+                            <input asp-for="Input.ConfirmPassword" class="form-control" placeholder="Şifrenizi tekrar girin" />
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+                        </div>
+                    </form>
+
+                    <hr class="my-4" />
+
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
