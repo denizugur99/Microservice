@@ -1,4 +1,6 @@
 using MicroserviceWebApp.Pages.Auth.SignIn;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel;
@@ -26,6 +28,11 @@ namespace MicroserviceWebApp.Pages.Auth
 
                 return Page();
             }
+            return RedirectToPage("/Index");
+        }
+        public async Task<IActionResult> OnPostSignOutAsync()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToPage("/Index");
         }
     }

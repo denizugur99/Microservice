@@ -39,7 +39,7 @@
                                     <li><a class="dropdown-item" asp-page="/Account/Settings">Settings</a></li>
                                     <li><hr class="dropdown-divider"></li>
                                     <li>
-                                        <form method="post" asp-page="/Auth/SignOut">
+                                        <form method="post" asp-page="/Auth/SignIn" asp-page-handler="SignOut">
                                             <button type="submit" class="dropdown-item">Sign Out</button>
                                         </form>
                                     </li>
@@ -48,6 +48,9 @@
                         }
                         else
                         {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-page="/Auth/SignUp">Sign Up</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-page="/Auth/SignIn">Sign In</a>
                             </li>
