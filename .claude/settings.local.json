@@ -29,7 +29,14 @@
       "Bash(Get-AppLockerPolicy -Effective -ErrorAction SilentlyContinue)",
       "Bash(Select-Object -ExpandProperty RuleCollections)",
       "Bash(start ms-settings:windowsdefender)",
-      "Bash(start windowsdefender:)"
+      "Bash(start windowsdefender:)",
+      "Bash(git checkout:*)",
+      "Bash(dotnet restore:*)",
+      "Bash(python -m json.tool:*)",
+      "Bash(netstat:*)",
+      "Bash(Get-Process -Name \"Microservice.File.Api\" -ErrorAction SilentlyContinue)",
+      "Bash(Select-Object Id,ProcessName,StartTime)",
+      "Bash(Format-Table)"
     ]
   }
 }

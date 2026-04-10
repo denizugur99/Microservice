@@ -1,6 +1,7 @@
 ﻿using MicroserviceWebApp.Options.IdentityOptions;
 using MicroserviceWebApp.Options.GatewayOptions;
 using Microsoft.Extensions.Options;
+using MicroserviceWebApp.Options;
 
 namespace MicroserviceWebApp.Extensions
 {
@@ -13,6 +14,9 @@ namespace MicroserviceWebApp.Extensions
 
             services.AddOptions<GatewayOption>().BindConfiguration(nameof(GatewayOption)).ValidateDataAnnotations().ValidateOnStart();
             services.AddSingleton<GatewayOption>(sp=>sp.GetRequiredService<IOptions<GatewayOption>>().Value);
+
+            services.AddOptions<MicroserviceOptions>().BindConfiguration(nameof(MicroserviceOptions)).ValidateDataAnnotations().ValidateOnStart();
+            services.AddSingleton<MicroserviceOptions>(sp => sp.GetRequiredService<IOptions<MicroserviceOptions>>().Value);
 
             return services;
         }

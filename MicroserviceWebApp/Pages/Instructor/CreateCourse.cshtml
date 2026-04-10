@@ -1,0 +1,62 @@
+@page
+@model MicroserviceWebApp.Pages.Instructor.CreateCourseModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Kurs Oluştur";
+}
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8 col-lg-7">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Yeni Kurs Oluştur</h2>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label asp-for="Input.CategoryId" class="form-label">Kategori</label>
+                            <select asp-for="Input.CategoryId" asp-items="Model.Input.CategoryDropdownList" class="form-select">
+                            </select>
+                            <span asp-validation-for="Input.CategoryId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Name" class="form-label">Kurs Adı</label>
+                            <input asp-for="Input.Name" class="form-control" placeholder="Kurs adını girin" />
+                            <span asp-validation-for="Input.Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Description" class="form-label">Açıklama</label>
+                            <textarea asp-for="Input.Description" class="form-control" rows="4" placeholder="Kurs açıklamasını girin"></textarea>
+                            <span asp-validation-for="Input.Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Price" class="form-label">Fiyat (₺)</label>
+                            <input asp-for="Input.Price" class="form-control" type="number" step="0.01" placeholder="0.00" />
+                            <span asp-validation-for="Input.Price" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Picture" class="form-label">Kurs Görseli</label>
+                            <input asp-for="Input.Picture" class="form-control" type="file" accept="image/*" />
+                            <span asp-validation-for="Input.Picture" class="text-danger"></span>
+                            <small class="form-text text-muted">Opsiyonel - JPEG, PNG veya GIF formatında</small>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Kurs Oluştur</button>
+                            <a href="/Instructor/Courses" class="btn btn-outline-secondary">İptal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

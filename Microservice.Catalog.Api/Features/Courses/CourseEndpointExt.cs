@@ -19,7 +19,7 @@ namespace Microservice.Catalog.Api.Features.Courses
                 .GetCourseByIdItemEndpoint()
                 .GetCoursesByUserIdItemEndpoint()
                 .UpdateCourseEndpoint()
-                .DeleteCourseItemEndpoint().RequireAuthorization("ClientCredential");
+                .DeleteCourseItemEndpoint();
 
         }
     }

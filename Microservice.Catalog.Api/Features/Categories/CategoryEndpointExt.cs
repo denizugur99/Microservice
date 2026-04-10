@@ -12,7 +12,7 @@ namespace Microservice.Catalog.Api.Features.Categories
             var categoryGroup = app.MapGroup("/api/v{version:apiVersion}/categories").WithTags("Categories").WithApiVersionSet(apiVersionSet)
                 .CreateCategoryGroupItemEndpoint()
                 .ListCategoryGroupItemEndpoint()
-                .GetByIdCategoryGroupItemEndpoint().RequireAuthorization("ClientCredential");
+                .GetByIdCategoryGroupItemEndpoint();
 
         }
     }

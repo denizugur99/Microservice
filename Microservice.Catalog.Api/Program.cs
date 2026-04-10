@@ -19,6 +19,10 @@ builder.Services.AddDatabaseExt();
 var busOptions = builder.Configuration.GetSection(nameof(BusOptions)).Get<BusOptions>() ?? new BusOptions();
 builder.Services.AddMassTransit(x =>
 {
+    // MassTransit 9.x lisans ayarı - development için
+    // Production ortam için https://masstransit.io/ adresinden ücretsiz lisans alınmalı
+    x.SetKebabCaseEndpointNameFormatter();
+
     x.UsingInMemory((context, cfg) =>
     {
         cfg.ConfigureEndpoints(context);
@@ -26,8 +30,8 @@ builder.Services.AddMassTransit(x =>
 
     x.AddRider(rider =>
     {
-        // Producer: UploadCoursePictureCommand gönder
-        rider.AddProducer<UploadCoursePictureCommand>("course-picture-uploaded");
+        // Producer: UploadCoursePictureCommand gönder (File API ile aynı topic)
+        rider.AddProducer<UploadCoursePictureCommand>("Order-events");
 
         // Consumer: CoursePictureUploadedEvent dinle
         rider.AddConsumer<CoursePictureUploadedEventConsumer>();

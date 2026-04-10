@@ -10,7 +10,7 @@ namespace Microservice.Catalog.Api.Features.Courses.Update
             {
                 groupBuilder.MapPut("/", async (UpdateCourseCommand command, IMediator mediator) => (await mediator.Send(command)).ToGenericResult()).WithName("updateCourse")
                      .MapToApiVersion(1, 0)
-                     .AddEndpointFilter<ValidationFilter<UpdateCourseCommand>>();
+                     .AddEndpointFilter<ValidationFilter<UpdateCourseCommand>>().RequireAuthorization(policyNames:"InstructorPolicy");
                 return groupBuilder;
             }
         

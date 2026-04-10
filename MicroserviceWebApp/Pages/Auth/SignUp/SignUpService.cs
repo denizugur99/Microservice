@@ -29,7 +29,7 @@ namespace MicroserviceWebApp.Pages.Auth.SignUp
                 return ServiceResult.Error("Account Creation Failed", "An error occurred while creating the account. Please try again later.");
 
             }
-            return ServiceResult.Succest();
+            return ServiceResult.Success();
 
         }
         private static UserCreateRequest CreateUserRequest(SignUpViewModel model)

@@ -28,13 +28,13 @@ namespace Microservice.Catalog.Api.Features.Courses.Create
             context.Courses.Add(newCourse);
             await context.SaveChangesAsync(cancellationToken);
 
-            if (request.Picture is not null)
+            if (request.picture is not null)
             {
                 using var memoryStream = new MemoryStream();
 
-                await request.Picture.CopyToAsync(memoryStream, cancellationToken);
+                await request.picture.CopyToAsync(memoryStream, cancellationToken);
                 var PictureAsByteArray=memoryStream.ToArray();
-                var  uploadCoursePictureCommand = new UploadCoursePictureCommand(newCourse.Id, PictureAsByteArray,request.Picture.FileName);
+                var  uploadCoursePictureCommand = new UploadCoursePictureCommand(newCourse.Id, PictureAsByteArray,request.picture.FileName);
 
                 // Scope oluştur ve producer'ı al
                 using var scope = serviceProvider.CreateScope();

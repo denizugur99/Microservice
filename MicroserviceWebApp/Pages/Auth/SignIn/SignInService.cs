@@ -29,7 +29,7 @@ namespace MicroserviceWebApp.Pages.Auth.SignIn
 
 
 
-            return ServiceResult.Succest();
+            return ServiceResult.Success();
         }
        
 

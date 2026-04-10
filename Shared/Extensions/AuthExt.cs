@@ -25,8 +25,8 @@ namespace Microservices.Shared.Extensions
                     ValidateIssuerSigningKey = true,
                     ValidateLifetime = true,
                     ValidateIssuer = true,
-                    RoleClaimType="roles",
-                    NameClaimType= "preferred_username"
+                    RoleClaimType=ClaimTypes.Role,
+                    NameClaimType = ClaimTypes.Name
 
                 };
 
@@ -47,11 +47,18 @@ namespace Microservices.Shared.Extensions
             });
             services.AddAuthorization(opt =>
             {
+                opt.AddPolicy("InstructorPolicy", policy =>
+                {
+                    policy.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme);
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim(ClaimTypes.Email);
+                    policy.RequireRole(ClaimTypes.Role,"instructor"); 
+                });
                 opt.AddPolicy("ClientCredential", policy =>
                 {
                     policy.AddAuthenticationSchemes("ClientCredentialSchema");
                     policy.RequireAuthenticatedUser();
-                    policy.RequireClaim("client_id");
+                   
                 });
                 opt.AddPolicy("Password", policy =>
                 {

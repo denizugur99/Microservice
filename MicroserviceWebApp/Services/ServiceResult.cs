@@ -14,7 +14,7 @@ namespace MicroserviceWebApp.Services
         [JsonIgnore]
         public bool IsFail => !IsSuccess;
 
-        public static ServiceResult Succest()
+        public static ServiceResult Success()
         {
             return new ServiceResult();
         }
@@ -71,12 +71,20 @@ namespace MicroserviceWebApp.Services
         {
             return new ServiceResult<T>
             {
-                
+
                 Data = data
             };
         }
 
-    
+        //201
+        public static ServiceResult<T> SuccesAsCreated(T data)
+        {
+            return new ServiceResult<T>
+            {
+
+                Data = data
+            };
+        }
 
         public new static ServiceResult<T> Error(ProblemDetails problemDetails)
         {

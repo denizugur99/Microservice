@@ -24,7 +24,7 @@ namespace Microservice.Catalog.Api.Features.Courses.Delete
         public static RouteGroupBuilder DeleteCourseItemEndpoint(this RouteGroupBuilder groupBuilder)
         {
             groupBuilder.MapDelete("/{id:guid}", async (Guid id, IMediator mediator) => (await mediator.Send(new DeleteCourseCommand(id))).ToGenericResult()).WithName("DeleteCourseById")
-                .MapToApiVersion(1, 0);
+                .MapToApiVersion(1, 0).RequireAuthorization(policyNames:"InstructorPolicy");
                 
             return groupBuilder;
         }

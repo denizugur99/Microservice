@@ -1,5 +1,6 @@
 using MicroserviceWebApp.DelegatedHandlers;
 using MicroserviceWebApp.Extensions;
+using MicroserviceWebApp.Options;
 using MicroserviceWebApp.Options.GatewayOptions;
 using MicroserviceWebApp.Pages.Auth.SignIn;
 using MicroserviceWebApp.Pages.Auth.SignUp;
@@ -18,12 +19,15 @@ builder.Services.AddOptionsExt();
 builder.Services.AddHttpClient<SignUpService>();
 builder.Services.AddHttpClient<SignInService>();
 builder.Services.AddHttpClient<TokenService>();
+builder.Services.AddScoped<CatalogService>();
+builder.Services.AddScoped<AuthenticatedHttpClientHandler>();
+builder.Services.AddScoped<ClientAuthenticatedHttpClientHandler>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddRefitClient<ICatalogRefitService>().ConfigureHttpClient((sp, config) =>
 {
-    var gatewayOption = sp.GetRequiredService<GatewayOption>();
-    config.BaseAddress = new Uri(gatewayOption.BaseAddress);
+    var microserviceOption = sp.GetRequiredService<MicroserviceOptions>();
+    config.BaseAddress = new Uri(microserviceOption.Catalog.BaseAddress);
 }).AddHttpMessageHandler<AuthenticatedHttpClientHandler>().AddHttpMessageHandler<ClientAuthenticatedHttpClientHandler>();
 
 

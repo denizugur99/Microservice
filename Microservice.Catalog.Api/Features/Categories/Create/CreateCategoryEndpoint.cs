@@ -10,7 +10,7 @@ namespace Microservice.Catalog.Api.Features.Categories.Create
             groupBuilder.MapPost("/",
                 async (CreateCategoryCommand command, IMediator mediator) => (await mediator.Send(command)).ToGenericResult()).WithName("Createcategory")
                 .MapToApiVersion(1,0)
-                .Produces<Guid>(StatusCodes.Status201Created).Produces(StatusCodes.Status404NotFound).AddEndpointFilter<ValidationFilter<CreateCategoryCommand>>();
+                .Produces<Guid>(StatusCodes.Status201Created).Produces(StatusCodes.Status404NotFound).AddEndpointFilter<ValidationFilter<CreateCategoryCommand>>().RequireAuthorization("Password");
           
             return groupBuilder;
         }

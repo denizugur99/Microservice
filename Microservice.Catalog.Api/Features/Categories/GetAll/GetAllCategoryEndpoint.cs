@@ -17,7 +17,7 @@ namespace Microservice.Catalog.Api.Features.Categories.GetAll
         public static RouteGroupBuilder ListCategoryGroupItemEndpoint(this RouteGroupBuilder groupBuilder)
         {
             groupBuilder.MapGet("/",
-                async (IMediator mediator) => (await mediator.Send(new GetAllCategoryQuery())).ToGenericResult()).MapToApiVersion(1, 0).WithName("getAllCategory");
+                async (IMediator mediator) => (await mediator.Send(new GetAllCategoryQuery())).ToGenericResult()).MapToApiVersion(1, 0).WithName("getAllCategory").RequireAuthorization(policyNames:"ClientCredential");
 
             return groupBuilder;
         }
