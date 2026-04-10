@@ -1,8 +1,12 @@
+using MicroserviceWebApp.DelegatedHandlers;
 using MicroserviceWebApp.Extensions;
+using MicroserviceWebApp.Options.GatewayOptions;
 using MicroserviceWebApp.Pages.Auth.SignIn;
 using MicroserviceWebApp.Pages.Auth.SignUp;
 using MicroserviceWebApp.Services;
+using MicroserviceWebApp.Services.Refit;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +19,15 @@ builder.Services.AddHttpClient<SignUpService>();
 builder.Services.AddHttpClient<SignInService>();
 builder.Services.AddHttpClient<TokenService>();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+builder.Services.AddRefitClient<ICatalogRefitService>().ConfigureHttpClient((sp, config) =>
+{
+    var gatewayOption = sp.GetRequiredService<GatewayOption>();
+    config.BaseAddress = new Uri(gatewayOption.BaseAddress);
+}).AddHttpMessageHandler<AuthenticatedHttpClientHandler>().AddHttpMessageHandler<ClientAuthenticatedHttpClientHandler>();
+
+
+
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;

@@ -6,7 +6,7 @@ using System.Net;
 
 namespace MicroserviceWebApp.DelegatedHandlers
 {
-    public class AuthenticatedHttpClientHandler(IHttpContextAccessor httpContextAccessor,TokenService tokenService):DelegatingHandler
+    internal class AuthenticatedHttpClientHandler(IHttpContextAccessor httpContextAccessor,TokenService tokenService):DelegatingHandler
     {
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {

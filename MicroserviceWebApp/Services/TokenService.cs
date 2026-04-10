@@ -46,7 +46,8 @@ namespace MicroserviceWebApp.Services
             return authenticationProperties;
         }
 
-        public async Task<TokenResponse> GetTokenByRefreshToken(string refreshToken){
+        public async Task<TokenResponse> GetTokenByRefreshToken(string refreshToken)
+        {
             var discoveryRequest = new DiscoveryDocumentRequest()
             {
                 Address = identityOption.Address,
@@ -70,8 +71,40 @@ namespace MicroserviceWebApp.Services
                 RefreshToken = refreshToken
             });
             return tokenResponse;
-          
+
 
         }
-}
+
+        public async Task<TokenResponse> GetClientAccessToken()
+        {
+
+            var discoveryRequest = new DiscoveryDocumentRequest()
+            {
+                Address = identityOption.Address,
+                Policy =
+                {
+                    RequireHttps = false
+                }
+
+            };
+            httpClient.BaseAddress = new Uri(identityOption.Address);
+            var discoveryResponse = await httpClient.GetDiscoveryDocumentAsync(discoveryRequest);
+            if (discoveryResponse.IsError)
+            {
+                throw new Exception($"Identity Server Discovery Failed:{discoveryResponse.Error}");
+            }
+            var tokenResponse = await httpClient.RequestClientCredentialsTokenAsync(new ClientCredentialsTokenRequest
+            {
+                Address = discoveryResponse.TokenEndpoint,
+                ClientId = identityOption.Web.ClientId,
+                ClientSecret = identityOption.Web.ClientSecret,
+
+            });
+            if (tokenResponse.IsError)
+            {
+                throw new Exception($"Token Request Failed:{tokenResponse.Error}");
+            }
+            return tokenResponse;
+        }
+    }
 }
