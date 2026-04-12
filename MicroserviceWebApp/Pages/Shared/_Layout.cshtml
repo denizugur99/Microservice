@@ -35,6 +35,12 @@
                                     @User.Identity.Name
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    
+                                        @if (User.IsInRole("instructor"))
+                                        {<li>  <a class="dropdown-item" asp-page="/Instructor/Index">Instructor</a>  </li> }
+                                        
+
+                                    
                                     <li><a class="dropdown-item" asp-page="/Account/Profile">Profile</a></li>
                                     <li><a class="dropdown-item" asp-page="/Account/Settings">Settings</a></li>
                                     <li><hr class="dropdown-divider"></li>
