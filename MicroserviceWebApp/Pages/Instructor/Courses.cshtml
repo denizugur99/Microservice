@@ -55,7 +55,7 @@
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="h5 mb-0 text-primary">@course.FormattedPrice</span>
                                     <div class="d-flex gap-1">
-                                        <a href="#" class="btn btn-outline-primary btn-sm">
+                                        <a asp-page="/Instructor/UpdateCourse" asp-route-id="@course.Id" class="btn btn-outline-primary btn-sm">
                                             <i class="bi bi-pencil"></i> Düzenle
                                         </a>
                                         <form method="post" asp-page-handler="Delete" class="d-inline-block m-0" onsubmit="return confirm('Bu kursu silmek istediğinizden emin misiniz?');">

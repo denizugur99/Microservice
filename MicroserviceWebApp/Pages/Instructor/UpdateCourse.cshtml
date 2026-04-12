@@ -1,0 +1,69 @@
+@page "{id:guid}"
+@model MicroserviceWebApp.Pages.Instructor.UpdateCourseModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Kurs Güncelle";
+}
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8 col-lg-7">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Kursu Güncelle</h2>
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <form method="post">
+                        <input type="hidden" asp-for="Input.Id" />
+                        <input type="hidden" asp-for="Input.ImageUrl" />
+
+                        <div class="mb-3">
+                            <label asp-for="Input.CategoryId" class="form-label">Kategori</label>
+                            <select asp-for="Input.CategoryId" asp-items="Model.Input.CategoryDropdownList" class="form-select">
+                            </select>
+                            <span asp-validation-for="Input.CategoryId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Name" class="form-label">Kurs Adı</label>
+                            <input asp-for="Input.Name" class="form-control" placeholder="Kurs adını girin" />
+                            <span asp-validation-for="Input.Name" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Description" class="form-label">Açıklama</label>
+                            <textarea asp-for="Input.Description" class="form-control" rows="4" placeholder="Kurs açıklamasını girin"></textarea>
+                            <span asp-validation-for="Input.Description" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Input.Price" class="form-label">Fiyat (₺)</label>
+                            <input asp-for="Input.Price" class="form-control" type="number" step="0.01" placeholder="0.00" />
+                            <span asp-validation-for="Input.Price" class="text-danger"></span>
+                        </div>
+
+                        @if (!string.IsNullOrEmpty(Model.Input.ImageUrl))
+                        {
+                            <div class="mb-3">
+                                <label class="form-label">Mevcut Görsel</label>
+                                <div class="mb-2">
+                                    <img src="@Model.Input.ImageUrl" alt="@Model.Input.Name" class="img-thumbnail" style="max-width: 300px; max-height: 200px;" />
+                                </div>
+                                <small class="text-muted">Not: Şu anda görsel güncelleme özelliği desteklenmemektedir.</small>
+                            </div>
+                        }
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Kursu Güncelle</button>
+                            <a asp-page="/Instructor/Courses" class="btn btn-outline-secondary">İptal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

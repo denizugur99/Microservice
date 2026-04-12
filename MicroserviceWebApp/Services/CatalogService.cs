@@ -96,5 +96,33 @@ namespace MicroserviceWebApp.Services
 
             return ServiceResult.Success();
         }
+
+        public async Task<ServiceResult<CourseDto>> GetCourseByIdAsync(Guid courseId)
+        {
+            var response = await catalogRefitService.GetCourseByIdAsync(courseId);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content!);
+                logger.LogError("Error fetching course: {Title} - {Detail}", problemDetails?.Title, problemDetails?.Detail);
+                return ServiceResult<CourseDto>.Error(problemDetails!);
+            }
+
+            return ServiceResult<CourseDto>.SuccesAsOkay(response.Content!);
+        }
+
+        public async Task<ServiceResult> UpdateCourseAsync(UpdateCourseRequest request)
+        {
+            var response = await catalogRefitService.UpdateCourseAsync(request);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content!);
+                logger.LogError("Error updating course: {Title} - {Detail}", problemDetails?.Title, problemDetails?.Detail);
+                return ServiceResult.Error(problemDetails!);
+            }
+
+            return ServiceResult.Success();
+        }
     }
 }

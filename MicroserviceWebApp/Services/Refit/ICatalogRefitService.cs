@@ -13,6 +13,8 @@ namespace MicroserviceWebApp.Services.Refit
         [Get("/api/v1.0/course/user/{userId}")]
         Task<ApiResponse<List<CourseDto>>> GetCoursesByUserIdAsync(Guid userId);
 
+        [Get("/api/v1.0/course/{id}")]
+        Task<ApiResponse<CourseDto>> GetCourseByIdAsync(Guid id);
 
         [Multipart]
         [Post("/api/v1.0/course")]
