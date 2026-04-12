@@ -33,13 +33,6 @@ namespace MicroserviceWebApp.Pages.Auth.SignIn
         }
        
 
-
-
-
-
-
-
-
         private async Task<TokenResponse> GetAccesToken(SignInViewModel signinVievModel)
         {
             var discoveryRequest = new DiscoveryDocumentRequest()
@@ -64,6 +57,7 @@ namespace MicroserviceWebApp.Pages.Auth.SignIn
                 ClientSecret=identityOption.Web.ClientSecret,
                 UserName = signinVievModel.Email,
                 Password = signinVievModel.Password
+
             });
           
             return tokenResponse;

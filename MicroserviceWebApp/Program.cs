@@ -1,4 +1,5 @@
 using MicroserviceWebApp.DelegatedHandlers;
+using MicroserviceWebApp.ExceptionHandlers;
 using MicroserviceWebApp.Extensions;
 using MicroserviceWebApp.Options;
 using MicroserviceWebApp.Options.GatewayOptions;
@@ -23,6 +24,7 @@ builder.Services.AddScoped<CatalogService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AuthenticatedHttpClientHandler>();
 builder.Services.AddScoped<ClientAuthenticatedHttpClientHandler>();
+builder.Services.AddExceptionHandler<UnauthorizedExceptionHandler>();
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddRefitClient<ICatalogRefitService>().ConfigureHttpClient((sp, config) =>
