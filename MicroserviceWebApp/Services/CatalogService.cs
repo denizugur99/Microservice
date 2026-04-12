@@ -7,7 +7,7 @@ using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace MicroserviceWebApp.Services
 {
-    public class CatalogService(ICatalogRefitService catalogRefitService, ILogger<CatalogService> logger)
+    public class CatalogService(ICatalogRefitService catalogRefitService, ILogger<CatalogService> logger,UserService userService)
     {
         public async Task<ServiceResult<List<CategoryViewModel>>> GetCategoriesAsync()
         {
@@ -52,6 +52,45 @@ namespace MicroserviceWebApp.Services
             {
                 var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content!);
                 logger.LogError("Error creating course: {Title} - {Detail}", problemDetails?.Title, problemDetails?.Detail);
+                return ServiceResult.Error(problemDetails!);
+            }
+
+            return ServiceResult.Success();
+        }
+
+
+
+        public async Task<ServiceResult<List<CourseViewModel>>> GetCoursesAsync()
+        {
+            var response = await catalogRefitService.GetCoursesByUserIdAsync(userService.GetUserId);
+            if (!response.IsSuccessStatusCode)
+            {
+                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content!);
+                logger.LogError("Error fetching courses: {Title} - {Detail}", problemDetails?.Title, problemDetails?.Detail);
+                return ServiceResult<List<CourseViewModel>>.Error(problemDetails!);
+            }
+            var courses = response.Content!.Select(c => new CourseViewModel
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Description = c.Description,
+                ImageUrl = c.ImageUrl,
+                Price = c.Price,
+                CategoryName = c.Category.Name,
+                Duration = c.Feature.Duration,
+                Rating = c.Feature.Rating
+            }).ToList();
+            return ServiceResult<List<CourseViewModel>>.SuccesAsOkay(courses);
+        }
+
+        public async Task<ServiceResult> DeleteCourseAsync(Guid courseId)
+        {
+            var response = await catalogRefitService.DeleteCourseAsync(courseId);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content!);
+                logger.LogError("Error deleting course: {Title} - {Detail}", problemDetails?.Title, problemDetails?.Detail);
                 return ServiceResult.Error(problemDetails!);
             }
 

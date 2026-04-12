@@ -1,0 +1,76 @@
+﻿@page
+@model MicroserviceWebApp.Pages.Instructor.CoursesModel
+@{
+    ViewData["Title"] = "Kurslarım";
+}
+
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">Kurslarım</h1>
+        <a asp-page="/Instructor/CreateCourse" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Yeni Kurs Ekle
+        </a>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle"></i> @Model.Message
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (Model.CoursesViewModel == null || !Model.CoursesViewModel.Any())
+    {
+        <div class="alert alert-info" role="alert">
+            <i class="bi bi-info-circle"></i> Henüz hiç kursunuz bulunmuyor. Hemen yeni bir kurs oluşturmaya başlayın!
+        </div>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            @foreach (var course in Model.CoursesViewModel)
+            {
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <img src="@course.ImageUrl" class="card-img-top" alt="@course.Name" style="height: 200px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@course.Name</h5>
+                            <p class="card-text text-muted small">@course.Description</p>
+
+                            <div class="mt-auto">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge bg-secondary">@course.CategoryName</span>
+                                    <span class="text-warning fw-bold">@course.FormattedRating</span>
+                                </div>
+
+                              
+
+                                <div class="mb-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-clock"></i> @course.FormattedDuration
+                                    </small>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="h5 mb-0 text-primary">@course.FormattedPrice</span>
+                                    <div class="d-flex gap-1">
+                                        <a href="#" class="btn btn-outline-primary btn-sm">
+                                            <i class="bi bi-pencil"></i> Düzenle
+                                        </a>
+                                        <form method="post" asp-page-handler="Delete" class="d-inline-block m-0" onsubmit="return confirm('Bu kursu silmek istediğinizden emin misiniz?');">
+                                            <input type="hidden" name="courseId" value="@course.Id" />
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

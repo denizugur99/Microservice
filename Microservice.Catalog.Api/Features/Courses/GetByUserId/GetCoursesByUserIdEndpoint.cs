@@ -36,7 +36,7 @@ namespace Microservice.Catalog.Api.Features.Courses.GetByUserId
             groupBuilder.MapGet("/user/{userId:guid}", async (Guid userId, IMediator mediator) =>
                 (await mediator.Send(new GetCoursesByUserIdQuery(userId))).ToGenericResult())
                 .WithName("GetCoursesByUserId")
-                .MapToApiVersion(1, 0);
+                .MapToApiVersion(1, 0).RequireAuthorization(policyNames: "InstructorPolicy");
 
             return groupBuilder;
         }

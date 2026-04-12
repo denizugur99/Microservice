@@ -1,8 +1,9 @@
 ﻿using Microservice.Bus.Comnmands;
+using Microservices.Shared.Services;
 
 namespace Microservice.Catalog.Api.Features.Courses.Create
 {
-    public class CreateCourseCommandHandler(AppDbContext context,IMapper mapper,IServiceProvider serviceProvider) : IRequestHandler<CreateCourseCommand, ServiceResult<Guid>>
+    public class CreateCourseCommandHandler(AppDbContext context,IMapper mapper,IServiceProvider serviceProvider,IIdentityService identity) : IRequestHandler<CreateCourseCommand, ServiceResult<Guid>>
     {
         public async Task<ServiceResult<Guid>> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
         {
@@ -22,9 +23,10 @@ namespace Microservice.Catalog.Api.Features.Courses.Create
             newCourse.Feature=new Feature
             {
                 Duration=10, //calculation pending
-                EducatorFullName="John Doe", //tokendname pending
+                EducatorFullName=identity.GetUserName, //tokendname pending
                 Rating =0
             };
+            newCourse.UserId=identity.GetUserId;
             context.Courses.Add(newCourse);
             await context.SaveChangesAsync(cancellationToken);
 
