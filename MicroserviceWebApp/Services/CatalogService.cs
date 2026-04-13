@@ -60,6 +60,29 @@ namespace MicroserviceWebApp.Services
 
 
 
+        public async Task<ServiceResult<List<CourseViewModel>>> GetAllCoursesAsync()
+        {
+            var response = await catalogRefitService.GetAllCoursesAsync();
+            if (!response.IsSuccessStatusCode)
+            {
+                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content!);
+                logger.LogError("Error fetching all courses: {Title} - {Detail}", problemDetails?.Title, problemDetails?.Detail);
+                return ServiceResult<List<CourseViewModel>>.Error(problemDetails!);
+            }
+            var courses = response.Content!.Select(c => new CourseViewModel
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Description = c.Description,
+                ImageUrl = c.ImageUrl,
+                Price = c.Price,
+                CategoryName = c.Category.Name,
+                Duration = c.Feature.Duration,
+                Rating = c.Feature.Rating
+            }).ToList();
+            return ServiceResult<List<CourseViewModel>>.SuccesAsOkay(courses);
+        }
+
         public async Task<ServiceResult<List<CourseViewModel>>> GetCoursesAsync()
         {
             var response = await catalogRefitService.GetCoursesByUserIdAsync(userService.GetUserId);

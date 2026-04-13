@@ -9,18 +9,18 @@ namespace Microservice.Catalog.Api.Features.Courses.GetById
     {
         public async Task<ServiceResult<CourseDto>> Handle(GetCourseByIdQuery request, CancellationToken cancellationToken)
         {
-            var hascourse= await context.Courses.FirstOrDefaultAsync(x=>x.Id==request.Id,cancellationToken);
-            if (hascourse is null) { 
-            return ServiceResult<CourseDto>.Error("Course Not Found", HttpStatusCode.NotFound);
-            }
-            var category = await context.Categories.FindAsync(hascourse.CategoryId, cancellationToken);
-            hascourse.Category = category!;
-
-
             var course = await context.Courses.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+
+            if (course is null)
+            {
+                return ServiceResult<CourseDto>.Error("Course Not Found", HttpStatusCode.NotFound);
+            }
+
+            var category = await context.Categories.FindAsync(course.CategoryId, cancellationToken);
+            course.Category = category!;
+
             var courseDto = mapper.Map<CourseDto>(course);
             return ServiceResult<CourseDto>.SuccesAsOkay(courseDto);
-           
         }
     }
 

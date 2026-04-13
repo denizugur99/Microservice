@@ -27,6 +27,7 @@ namespace Microservice.Catalog.Api.Features.Courses.Create
                 Rating =0
             };
             newCourse.UserId=identity.GetUserId;
+         
             context.Courses.Add(newCourse);
             await context.SaveChangesAsync(cancellationToken);
 

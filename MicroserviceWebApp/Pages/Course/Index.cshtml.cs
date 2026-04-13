@@ -1,25 +1,24 @@
 using MicroserviceWebApp.Pages.Instructor.ViewModel;
 using MicroserviceWebApp.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace MicroserviceWebApp.Pages
+namespace MicroserviceWebApp.Pages.Course
 {
-    public class IndexModel(CatalogService catalogService) : PageModel
+    public class CourseIndexModel(CatalogService catalogService) : PageModel
     {
         public List<CourseViewModel> CoursesViewModel { get; set; } = null!;
+
         public async Task OnGetAsync()
         {
-          var result= await catalogService.GetAllCoursesAsync();
+            var result = await catalogService.GetAllCoursesAsync();
             if (result.IsFail)
             {
-                //TODO:hata yönlendirmesi
+                //TODO: hata sayfasına yönlendirme yapılacak
             }
             else
             {
                 CoursesViewModel = result.Data!;
             }
-
         }
     }
 }

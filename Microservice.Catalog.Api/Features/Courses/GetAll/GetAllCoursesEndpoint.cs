@@ -11,13 +11,13 @@ namespace Microservice.Catalog.Api.Features.Courses.GetAll
     {
         public async Task<ServiceResult<List<CourseDto>>> Handle(GetAllCoursesQuery request, CancellationToken cancellationToken)
         {
-           var courses=await context.Courses.ToListAsync(cancellationToken);
-            var categories=await context.Categories.ToListAsync(cancellationToken);
+            var courses = await context.Courses.ToListAsync(cancellationToken);
+            var categories = await context.Categories.ToListAsync(cancellationToken);
             foreach (var course in courses)
             {
                 course.Category = categories.First(c => c.Id == course.CategoryId);
             }
-            var courseDtos=mapper.Map<List<CourseDto>>(courses);
+            var courseDtos = mapper.Map<List<CourseDto>>(courses);
             return ServiceResult<List<CourseDto>>.SuccesAsOkay(courseDtos);
         }
     }
@@ -27,7 +27,7 @@ namespace Microservice.Catalog.Api.Features.Courses.GetAll
         public static RouteGroupBuilder GetAllCourseEndpoint(this RouteGroupBuilder groupBuilder)
         {
             groupBuilder.MapGet("/", async ( IMediator mediator) => (await mediator.Send(new GetAllCoursesQuery())).ToGenericResult()).WithName("GetAllCourse")
-                .MapToApiVersion(1, 0);
+                .MapToApiVersion(1, 0).RequireAuthorization("ClientCredential");
                
             return groupBuilder;
         }
