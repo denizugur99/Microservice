@@ -59,7 +59,7 @@ namespace MicroserviceWebApp.Services
             var client=httpClientFactory.CreateClient("GetTokenByRefreshToken");
             
             client.BaseAddress = new Uri(identityOption.Address);
-            var discoveryResponse = await client.GetDiscoveryDocumentAsync();
+            var discoveryResponse = await client.GetDiscoveryDocumentAsync(discoveryRequest);
             if (discoveryResponse.IsError)
             {
                 throw new Exception($"Identity Server Discovery Failed:{discoveryResponse.Error}");

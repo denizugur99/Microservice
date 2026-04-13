@@ -1,8 +1,10 @@
 ﻿using Duende.IdentityModel.Client;
 using MicroserviceWebApp.Services;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using System.Net;
+using System.Security.Claims;
 
 namespace MicroserviceWebApp.DelegatedHandlers
 {
@@ -28,7 +30,11 @@ namespace MicroserviceWebApp.DelegatedHandlers
             if(tokenresponse.IsError) throw new UnauthorizedAccessException("Failed to refresh access token");
 
             //todo : update the authentication cookie with new tokens
-
+            var authenticationProperties= tokenService.CreateAuthenticationProperties(tokenresponse);
+            var userClaims=httpContextAccessor.HttpContext.User.Claims;
+            var claimIdentity= new ClaimsIdentity(userClaims,CookieAuthenticationDefaults.AuthenticationScheme,ClaimTypes.Name,ClaimTypes.Role);
+            var claimsPrincipal = new ClaimsPrincipal(claimIdentity);
+            await httpContextAccessor.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal, authenticationProperties);
             request.SetBearerToken(tokenresponse.AccessToken!);
             return await base.SendAsync(request, cancellationToken);
         }

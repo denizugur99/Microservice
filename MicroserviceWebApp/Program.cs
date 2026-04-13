@@ -9,6 +9,7 @@ using MicroserviceWebApp.Services;
 using MicroserviceWebApp.Services.Refit;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Refit;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,6 +63,17 @@ builder.Services.AddAuthentication(x =>
 });
 builder.Services.AddAuthorization();
 var app = builder.Build();
+
+var cultureInfo = new System.Globalization.CultureInfo("en-US");
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture(cultureInfo),
+    SupportedCultures = new List<CultureInfo> { cultureInfo },
+    SupportedUICultures = new List<CultureInfo> { cultureInfo }
+});
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

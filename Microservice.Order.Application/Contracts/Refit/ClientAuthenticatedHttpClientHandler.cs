@@ -27,7 +27,7 @@ namespace Microservice.Order.Application.Contracts.Refit
                 };
                 var client=httpClientFactory.CreateClient();
                 client.BaseAddress=new Uri(identityOptions.Address);
-                var discoveryResponse=await client.GetDiscoveryDocumentAsync();
+                var discoveryResponse=await client.GetDiscoveryDocumentAsync(discoveryRequest);
                 if(discoveryResponse.IsError)
                 {
                     throw new Exception($"Identity Server Discovery Failed:{discoveryResponse.Error}");

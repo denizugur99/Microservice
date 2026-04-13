@@ -51,13 +51,7 @@ namespace Microservice.Order.Application.Features.Orders.Create
             var paymentResponse=await paymentService.CreatePaymentAsync(createPaymentRequest);
 
             string paymentStatus;
-            if (paymentResponse.Status == false)
-            {
-                paymentStatus = "Failed";
-                var response = new CreateOrderResponse(order.Id, paymentStatus);
-                return ServiceResult<CreateOrderResponse>.SuccesAsOkay(response);
-            }
-
+          
 
             order.MarkAsPaid(paymentResponse.PaymentId!.Value);
             orderRepository.Update(order);

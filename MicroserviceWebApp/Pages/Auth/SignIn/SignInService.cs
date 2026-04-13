@@ -45,7 +45,7 @@ namespace MicroserviceWebApp.Pages.Auth.SignIn
             };
             var client = httpClient;
             client.BaseAddress = new Uri(identityOption.Address);
-            var discoveryResponse = await client.GetDiscoveryDocumentAsync();
+            var discoveryResponse = await client.GetDiscoveryDocumentAsync(discoveryRequest);
             if (discoveryResponse.IsError)
             {
                 throw new Exception($"Identity Server Discovery Failed:{discoveryResponse.Error}");
@@ -56,7 +56,8 @@ namespace MicroserviceWebApp.Pages.Auth.SignIn
                 ClientId = identityOption.Web.ClientId,
                 ClientSecret=identityOption.Web.ClientSecret,
                 UserName = signinVievModel.Email,
-                Password = signinVievModel.Password
+                Password = signinVievModel.Password,
+                Scope="offline_access"
 
             });
           
