@@ -50,9 +50,15 @@
                                         </a>
                                         @if (User.Identity?.IsAuthenticated == true)
                                         {
-                                            <button type="button" class="btn btn-success btn-sm">
-                                                <i class="bi bi-cart-plus"></i> Satın Al
-                                            </button>
+                                            <form method="post" asp-page-handler="AddToBasket" class="d-inline">
+                                                <input type="hidden" name="courseId" value="@course.Id" />
+                                                <input type="hidden" name="courseName" value="@course.Name" />
+                                                <input type="hidden" name="coursePrice" value="@course.Price" />
+                                                <input type="hidden" name="imageUrl" value="@course.ImageUrl" />
+                                                <button type="submit" class="btn btn-success btn-sm">
+                                                    <i class="bi bi-cart-plus"></i> Sepete Ekle
+                                                </button>
+                                            </form>
                                         }
                                     </div>
                                 </div>

@@ -21,11 +21,11 @@
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <div>
                                 <h2 class="card-title fw-bold">@Model.Course.Name</h2>
-                                <span class="badge bg-secondary">@Model.Course.Category.Name</span>
+                                <span class="badge bg-secondary">@Model.Course.CategoryName</span>
                             </div>
                             <div class="text-end">
-                                <div class="text-warning fw-bold fs-5">@Model.Course.Feature.Rating.ToString("F1") ⭐</div>
-                                <small class="text-muted">@Model.Course.Feature.Duration saat</small>
+                                <div class="text-warning fw-bold fs-5">@Model.Course.FormattedRating</div>
+                                <small class="text-muted">@Model.Course.FormattedDuration</small>
                             </div>
                         </div>
 
@@ -38,18 +38,18 @@
                                 <h5 class="fw-bold mb-3">Kurs Özellikleri</h5>
                                 <ul class="list-unstyled">
                                     <li class="mb-2">
-                                        <i class="bi bi-person text-primary"></i>
-                                        <strong>Eğitmen:</strong> @Model.Course.Feature.EducatorFullName
+                                        <i class="bi bi-person text-success"></i>
+                                        <strong>Eğitmen:</strong> @Model.Course.UserName
                                     </li>
                                     <li class="mb-2">
                                         <i class="bi bi-clock text-primary"></i>
-                                        <strong>Süre:</strong> @Model.Course.Feature.Duration saat
+                                        <strong>Süre:</strong> @Model.Course.FormattedDuration
                                     </li>
                                     <li class="mb-2">
                                         <i class="bi bi-star text-warning"></i>
-                                        <strong>Değerlendirme:</strong> @Model.Course.Feature.Rating.ToString("F1") / 5.0
+                                        <strong>Değerlendirme:</strong> @Model.Course.FormattedRating
                                     </li>
-                                   
+
                                 </ul>
                             </div>
                         </div>
@@ -60,14 +60,27 @@
             <div class="col-lg-4">
                 <div class="card shadow-sm sticky-top" style="top: 20px;">
                     <div class="card-body">
-                        <h3 class="text-primary fw-bold mb-3">$@Model.Course.Price.ToString("N2")</h3>
+                        <h3 class="text-primary fw-bold mb-3">@Model.Course.FormattedPrice</h3>
+
+                        @if (!string.IsNullOrEmpty(Model.Message))
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="bi bi-check-circle"></i> @Model.Message
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        }
 
                         @if (User.Identity?.IsAuthenticated == true)
                         {
-                            <button type="button" class="btn btn-success btn-lg w-100 mb-3">
-                                <i class="bi bi-cart-plus"></i> Sepete Ekle
-                            </button>
-                         
+                            <form method="post" asp-page-handler="AddToBasket">
+                                <input type="hidden" name="courseId" value="@Model.Course.Id" />
+                                <input type="hidden" name="courseName" value="@Model.Course.Name" />
+                                <input type="hidden" name="coursePrice" value="@Model.Course.Price" />
+                                <input type="hidden" name="imageUrl" value="@Model.Course.ImageUrl" />
+                                <button type="submit" class="btn btn-success btn-lg w-100 mb-3">
+                                    <i class="bi bi-cart-plus"></i> Sepete Ekle
+                                </button>
+                            </form>
                         }
                         else
                         {
@@ -83,7 +96,7 @@
                         <ul class="list-unstyled">
                             <li class="mb-2">
                                 <i class="bi bi-check-circle text-success"></i>
-                                @Model.Course.Feature.Duration saat video içerik
+                                @Model.Course.FormattedDuration video içerik
                             </li>
                             <li class="mb-2">
                                 <i class="bi bi-check-circle text-success"></i>

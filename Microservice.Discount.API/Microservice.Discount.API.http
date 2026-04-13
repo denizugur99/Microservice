@@ -12,7 +12,7 @@ Content-Type: application/json
 {
   "code": "DISCOUNT15",
   "rate": 0.5,
-  "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "userId": "325c81586-0538-4ea2-a095-a9f41abe5585",
   "expireDate": "2026-12-31T23:59:59Z"
 }
 

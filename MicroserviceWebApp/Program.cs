@@ -21,6 +21,7 @@ builder.Services.AddHttpClient<SignUpService>();
 builder.Services.AddHttpClient<SignInService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<CatalogService>();
+builder.Services.AddScoped<BasketService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<AuthenticatedHttpClientHandler>();
 builder.Services.AddScoped<ClientAuthenticatedHttpClientHandler>();
@@ -32,6 +33,12 @@ builder.Services.AddRefitClient<ICatalogRefitService>().ConfigureHttpClient((sp,
     var microserviceOption = sp.GetRequiredService<MicroserviceOptions>();
     config.BaseAddress = new Uri(microserviceOption.Catalog.BaseAddress);
 }).AddHttpMessageHandler<AuthenticatedHttpClientHandler>().AddHttpMessageHandler<ClientAuthenticatedHttpClientHandler>();
+
+builder.Services.AddRefitClient<IBasketRefitService>().ConfigureHttpClient((sp, config) =>
+{
+    var microserviceOption = sp.GetRequiredService<MicroserviceOptions>();
+    config.BaseAddress = new Uri(microserviceOption.Basket.BaseAddress);
+}).AddHttpMessageHandler<AuthenticatedHttpClientHandler>();
 
 
 

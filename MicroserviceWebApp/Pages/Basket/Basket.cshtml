@@ -1,0 +1,164 @@
+﻿@page
+@model MicroserviceWebApp.Pages.Basket.BasketModel
+@{
+    ViewData["Title"] = "Sepetim";
+}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="fw-bold mb-4">
+                <i class="bi bi-cart3"></i> Sepetim
+            </h2>
+
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <i class="bi bi-info-circle"></i> @Model.Message
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+        </div>
+    </div>
+
+    @if (Model.Basket == null || Model.Basket.IsEmpty)
+    {
+        <div class="row">
+            <div class="col-12">
+                <div class="alert alert-warning text-center py-5" role="alert">
+                    <i class="bi bi-cart-x" style="font-size: 3rem;"></i>
+                    <h4 class="mt-3">Sepetiniz Boş</h4>
+                    <p class="text-muted">Henüz sepetinize ürün eklemediniz.</p>
+                    <a asp-page="/Course/Index" class="btn btn-primary mt-3">
+                        <i class="bi bi-arrow-left"></i> Kursları İncele
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <!-- Sepet Ürünleri -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">Sepet Ürünleri (@Model.Basket.ItemCount Ürün)</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            @foreach (var item in Model.Basket.Items)
+                            {
+                                <div class="list-group-item">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-2">
+                                            <course-picture src="@item.ImageUrl" class="img-fluid rounded" style="height: 80px; width: 100%; object-fit: cover;" />
+                                        </div>
+                                        <div class="col-md-5">
+                                            <h6 class="mb-1">@item.CourseName</h6>
+                                            <small class="text-muted">Kurs</small>
+                                        </div>
+                                        <div class="col-md-3 text-center">
+                                            <h5 class="mb-0 text-primary">@item.FormattedPrice</h5>
+                                        </div>
+                                        <div class="col-md-2 text-end">
+                                            <form method="post" asp-page-handler="RemoveItem" class="d-inline">
+                                                <input type="hidden" name="courseId" value="@item.CourseId" />
+                                                <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                        onclick="return confirm('Bu ürünü sepetten kaldırmak istediğinizden emin misiniz?')">
+                                                    <i class="bi bi-trash"></i> Kaldır
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- İndirim Kuponu -->
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h6 class="card-title">İndirim Kuponu</h6>
+                        @if (Model.Basket.HasDiscount)
+                        {
+                            <div class="alert alert-success d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="bi bi-check-circle"></i>
+                                    <strong>@Model.Basket.Discount!.FormattedCoupon</strong> kuponu uygulandı
+                                    <span class="badge bg-success">@Model.Basket.Discount.FormattedRate İndirim</span>
+                                </div>
+                                <form method="post" asp-page-handler="RemoveDiscount" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-x"></i> Kaldır
+                                    </button>
+                                </form>
+                            </div>
+                        }
+                        else
+                        {
+                            <form method="post" asp-page-handler="ApplyDiscount" class="row g-2">
+                                <div class="col-auto flex-grow-1">
+                                    <input type="text" name="coupon" class="form-control" placeholder="Kupon kodunuzu girin (örn: SUMMER2024)" required />
+                                </div>
+                                <input type="hidden" name="rate" value="0.30" />
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-percent"></i> Uygula
+                                    </button>
+                                </div>
+                                <small class="text-muted mt-2">
+                                    <i class="bi bi-info-circle"></i> Geçerli kupon kodu giriniz. İndirim oranı otomatik hesaplanacaktır.
+                                </small>
+                            </form>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sipariş Özeti -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm sticky-top" style="top: 20px;">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Sipariş Özeti</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Ara Toplam:</span>
+                            <strong>@Model.Basket.FormattedSubTotal</strong>
+                        </div>
+
+                        @if (Model.Basket.HasDiscount)
+                        {
+                            <div class="d-flex justify-content-between mb-2 text-success">
+                                <span>İndirim (@Model.Basket.FormattedDiscountRate):</span>
+                                <strong>@Model.Basket.FormattedDiscountAmount</strong>
+                            </div>
+                            <hr />
+                        }
+
+                        <div class="d-flex justify-content-between mb-3">
+                            <h5 class="mb-0">Toplam:</h5>
+                            <h5 class="mb-0 text-primary">@Model.Basket.FormattedTotalPrice</h5>
+                        </div>
+
+                        <button class="btn btn-success btn-lg w-100 mb-2">
+                            <i class="bi bi-credit-card"></i> Ödemeye Geç
+                        </button>
+
+                        <a asp-page="/Course/Index" class="btn btn-outline-secondary w-100">
+                            <i class="bi bi-arrow-left"></i> Alışverişe Devam Et
+                        </a>
+                    </div>
+
+                    <div class="card-footer bg-light">
+                        <small class="text-muted">
+                            <i class="bi bi-shield-check"></i> Güvenli ödeme
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

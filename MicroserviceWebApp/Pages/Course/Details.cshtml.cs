@@ -1,13 +1,17 @@
-using MicroserviceWebApp.Pages.Instructor.Dto;
+using MicroserviceWebApp.Pages.Instructor.ViewModel;
 using MicroserviceWebApp.Services;
+using MicroserviceWebApp.Services.Refit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace MicroserviceWebApp.Pages.Course
 {
-    public class CourseDetailsModel(CatalogService catalogService) : PageModel
+    public class CourseDetailsModel(CatalogService catalogService, BasketService basketService) : PageModel
     {
-        public CourseDto? Course { get; set; }
+        public CourseViewModel? Course { get; set; }
+
+        [TempData]
+        public string? Message { get; set; }
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
@@ -20,6 +24,26 @@ namespace MicroserviceWebApp.Pages.Course
 
             Course = result.Data;
             return Page();
+        }
+
+        public async Task<IActionResult> OnPostAddToBasketAsync(Guid courseId, string courseName, decimal coursePrice, string imageUrl)
+        {
+            if (!User.Identity?.IsAuthenticated ?? true)
+            {
+                return RedirectToPage("/Auth/SignIn");
+            }
+
+            var request = new AddBasketItemRequest(courseId, courseName, coursePrice, imageUrl);
+            var result = await basketService.AddItemToBasketAsync(request);
+
+            if (result.IsFail)
+            {
+                Message = "Ürün sepete eklenirken bir hata oluştu.";
+                return RedirectToPage(new { id = courseId });
+            }
+
+            Message = "Ürün başarıyla sepete eklendi!";
+            return RedirectToPage("/Basket/Basket");
         }
     }
 }

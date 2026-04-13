@@ -43,7 +43,7 @@ namespace MicroserviceWebApp.Pages.Instructor
                 Description = course.Description,
                 Price = course.Price,
                 ImageUrl = course.ImageUrl,
-                CategoryId = course.Category.Id
+                CategoryId = course.CategoryId
             };
             Input.SetCategoryDropdownList(categoriesResult.Data!);
 
