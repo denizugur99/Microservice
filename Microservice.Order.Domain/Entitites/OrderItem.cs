@@ -10,6 +10,8 @@ namespace Microservice.Order.Domain.Entitites
         public Guid ProductId { get; set; }
         public string ProductName { get; set; }=null!;
         public decimal UnitPrice { get; set; }
+
+        //todo : bu silinicek
         public Guid Guid { get; set; }
         public Order Order { get; set; }=null!;
 

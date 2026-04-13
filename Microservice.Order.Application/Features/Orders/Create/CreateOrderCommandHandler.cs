@@ -14,12 +14,12 @@ using System.Text;
 
 namespace Microservice.Order.Application.Features.Orders.Create
 {
-    public class CreateOrderCommandHandler(IOrderRepository orderRepository,IGenericRepository<int,Address> addressRepository,IIdentityService identityService,IUnitOfWork unitOfWork,ITopicProducer<OrderCreatedEvent> topicProducer,IPaymentService paymentService) : IRequestHandler<CreateOrderComand, ServiceResult>
+    public class CreateOrderCommandHandler(IOrderRepository orderRepository,IGenericRepository<int,Address> addressRepository,IIdentityService identityService,IUnitOfWork unitOfWork,ITopicProducer<OrderCreatedEvent> topicProducer,IPaymentService paymentService) : IRequestHandler<CreateOrderComand, ServiceResult<CreateOrderResponse>>
     {
-        public async Task<ServiceResult> Handle(CreateOrderComand request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<CreateOrderResponse>> Handle(CreateOrderComand request, CancellationToken cancellationToken)
         {
             if (!request.Orders.Any()) {
-            return ServiceResult.Error("Order is empty","Orders can not be empty", HttpStatusCode.BadRequest);
+            return ServiceResult<CreateOrderResponse>.Error("Order is empty","Orders can not be empty", HttpStatusCode.BadRequest);
 
             }
            
@@ -49,18 +49,26 @@ namespace Microservice.Order.Application.Features.Orders.Create
 
             CreatePaymentRequest createPaymentRequest = new CreatePaymentRequest(order.OrderCode, request.Payment.CardNumber, request.Payment.CardName, request.Payment.Expiration, request.Payment.CVV, order.TotalPrice);
             var paymentResponse=await paymentService.CreatePaymentAsync(createPaymentRequest);
-            var paymentId = Guid.Empty;
-            if (paymentResponse.Status == false)
-                return ServiceResult.Error(paymentResponse.ErrorMessage!, HttpStatusCode.InternalServerError);
 
-          
+            string paymentStatus;
+            if (paymentResponse.Status == false)
+            {
+                paymentStatus = "Failed";
+                var response = new CreateOrderResponse(order.Id, paymentStatus);
+                return ServiceResult<CreateOrderResponse>.SuccesAsOkay(response);
+            }
+
+
             order.MarkAsPaid(paymentResponse.PaymentId!.Value);
             orderRepository.Update(order);
             await unitOfWork.CommitAsync(cancellationToken);
 
-
+            
+            paymentStatus = order.Status.ToString();
             await topicProducer.Produce(new OrderCreatedEvent(order.Id,identityService.GetUserId));
-            return ServiceResult.SuccesAsNoContent();
+
+            var successResponse = new CreateOrderResponse(order.Id, paymentStatus);
+            return ServiceResult<CreateOrderResponse>.SuccesAsOkay(successResponse);
             // Artık order metodlarını çağırabilirsiniz:
             // order.AddOrderItem(productId, productName, unitPrice);
             // order.ApplyDiscount(discount);

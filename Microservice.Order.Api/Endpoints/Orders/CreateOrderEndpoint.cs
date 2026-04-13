@@ -15,7 +15,7 @@ namespace Microservice.Order.Api.Endpoints.Orders
                 .WithName("Createorder")
                 .MapToApiVersion(1, 0)
                 .AddEndpointFilter<ValidationFilter<CreateOrderComand>>()
-                .Produces(StatusCodes.Status204NoContent)
+                .Produces(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status400BadRequest)
                 .Produces(StatusCodes.Status404NotFound);
 

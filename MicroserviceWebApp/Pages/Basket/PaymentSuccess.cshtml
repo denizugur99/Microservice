@@ -1,0 +1,72 @@
+@page
+@model MicroserviceWebApp.Pages.Basket.PaymentSuccessModel
+@{
+    ViewData["Title"] = "Ödeme Başarılı";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-body text-center py-5">
+                    <div class="mb-4">
+                        <i class="bi bi-check-circle-fill text-success" style="font-size: 5rem;"></i>
+                    </div>
+                    <h2 class="fw-bold text-success mb-3">Ödemeniz Başarılı!</h2>
+                    <p class="text-muted mb-4">
+                        Siparişiniz başarıyla oluşturuldu. Sipariş numaranız aşağıdadır.
+                    </p>
+
+                    <div class="alert alert-light border">
+                        <small class="text-muted d-block mb-1">Sipariş Numarası</small>
+                        <h5 class="mb-0 font-monospace">@Model.OrderId</h5>
+                    </div>
+
+                    <div class="row text-start my-4">
+                        <div class="col-12">
+                            <div class="d-flex align-items-start mb-3">
+                                <i class="bi bi-check-circle text-success me-3 fs-5"></i>
+                                <div>
+                                    <h6 class="mb-1">Sipariş Onaylandı</h6>
+                                    <small class="text-muted">Siparişiniz sistemimize kaydedildi.</small>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-start mb-3">
+                                <i class="bi bi-check-circle text-success me-3 fs-5"></i>
+                                <div>
+                                    <h6 class="mb-1">Ödeme Alındı</h6>
+                                    <small class="text-muted">Ödemeniz başarıyla işleme alındı.</small>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-envelope text-primary me-3 fs-5"></i>
+                                <div>
+                                    <h6 class="mb-1">E-posta Gönderildi</h6>
+                                    <small class="text-muted">Sipariş detayları e-posta adresinize gönderildi.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <div class="d-grid gap-2">
+                        <a asp-page="/Order/Index" class="btn btn-primary btn-lg">
+                            <i class="bi bi-box-seam"></i> Siparişlerimi Görüntüle
+                        </a>
+                        <a asp-page="/Course/Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i> Alışverişe Devam Et
+                        </a>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-light text-center">
+                    <small class="text-muted">
+                        <i class="bi bi-info-circle"></i>
+                        Sorularınız için destek ekibimizle iletişime geçebilirsiniz.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

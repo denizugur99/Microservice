@@ -1,0 +1,170 @@
+@page
+@model MicroserviceWebApp.Pages.Basket.CheckoutModel
+@{
+    ViewData["Title"] = "Ödeme";
+}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a asp-page="/Basket/Basket">Sepet</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Ödeme</li>
+                </ol>
+            </nav>
+            <h2 class="fw-bold mb-4">
+                <i class="bi bi-credit-card"></i> Ödeme Bilgileri
+            </h2>
+
+            @if (!string.IsNullOrEmpty(Model.Message))
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="bi bi-exclamation-triangle"></i> @Model.Message
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+        </div>
+    </div>
+
+    <form method="post">
+        <div class="row">
+            <!-- Payment and Address Forms -->
+            <div class="col-lg-8">
+                <!-- Address Section -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-geo-alt"></i> Teslimat Adresi</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="OrderInput.Address.Province" class="form-label">İl</label>
+                                <input asp-for="OrderInput.Address.Province" class="form-control" />
+                                <span asp-validation-for="OrderInput.Address.Province" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="OrderInput.Address.City" class="form-label">İlçe</label>
+                                <input asp-for="OrderInput.Address.City" class="form-control" />
+                                <span asp-validation-for="OrderInput.Address.City" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="OrderInput.Address.Region" class="form-label">Bölge</label>
+                                <input asp-for="OrderInput.Address.Region" class="form-control" />
+                                <span asp-validation-for="OrderInput.Address.Region" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="OrderInput.Address.PostalCode" class="form-label">Posta Kodu</label>
+                                <input asp-for="OrderInput.Address.PostalCode" class="form-control" placeholder="34710" />
+                                <span asp-validation-for="OrderInput.Address.PostalCode" class="text-danger"></span>
+                            </div>
+                            <div class="col-12">
+                                <label asp-for="OrderInput.Address.Street" class="form-label">Sokak/Adres</label>
+                                <textarea asp-for="OrderInput.Address.Street" class="form-control" rows="2"></textarea>
+                                <span asp-validation-for="OrderInput.Address.Street" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Section -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-credit-card-2-front"></i> Ödeme Bilgileri</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label asp-for="OrderInput.Payment.CardName" class="form-label">Kart Sahibi Adı</label>
+                                <input asp-for="OrderInput.Payment.CardName" class="form-control" placeholder="Ad Soyad" />
+                                <span asp-validation-for="OrderInput.Payment.CardName" class="text-danger"></span>
+                            </div>
+                            <div class="col-12">
+                                <label asp-for="OrderInput.Payment.CardNumber" class="form-label">Kart Numarası</label>
+                                <input asp-for="OrderInput.Payment.CardNumber" class="form-control" placeholder="4111 1111 1111 1111" maxlength="16" />
+                                <span asp-validation-for="OrderInput.Payment.CardNumber" class="text-danger"></span>
+                                <small class="text-muted">Test için: 4111111111111111</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="OrderInput.Payment.Expiration" class="form-label">Son Kullanma Tarihi</label>
+                                <input asp-for="OrderInput.Payment.Expiration" class="form-control" placeholder="MM/YY" maxlength="5" />
+                                <span asp-validation-for="OrderInput.Payment.Expiration" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label asp-for="OrderInput.Payment.Cvv" class="form-label">CVV</label>
+                                <input asp-for="OrderInput.Payment.Cvv" class="form-control" placeholder="123" maxlength="4" type="password" />
+                                <span asp-validation-for="OrderInput.Payment.Cvv" class="text-danger"></span>
+                            </div>
+                            <input asp-for="OrderInput.Payment.Amount" type="hidden" />
+                            <input asp-for="OrderInput.Discount" type="hidden" />
+                        </div>
+
+                        <div class="alert alert-info mt-3">
+                            <i class="bi bi-info-circle"></i>
+                            <strong>Test Modu:</strong> Form mock verilerle doldurulmuştur. Test için varsayılan değerleri kullanabilirsiniz.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm sticky-top" style="top: 20px;">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Sipariş Özeti</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.Basket != null)
+                        {
+                            <h6 class="mb-3">Ürünler (@Model.Basket.ItemCount adet)</h6>
+                            @foreach (var item in Model.Basket.Items)
+                            {
+                                <div class="d-flex justify-content-between mb-2">
+                                    <small class="text-truncate" style="max-width: 70%;">@item.CourseName</small>
+                                    <small class="text-nowrap"><strong>@item.FormattedPrice</strong></small>
+                                </div>
+                            }
+                            <hr />
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Ara Toplam:</span>
+                                <strong>@Model.Basket.FormattedSubTotal</strong>
+                            </div>
+
+                            @if (Model.Basket.HasDiscount)
+                            {
+                                <div class="d-flex justify-content-between mb-2 text-success">
+                                    <span>İndirim (@Model.Basket.FormattedDiscountRate):</span>
+                                    <strong>@Model.Basket.FormattedDiscountAmount</strong>
+                                </div>
+                            }
+
+                            <hr />
+                            <div class="d-flex justify-content-between mb-3">
+                                <h5 class="mb-0">Toplam:</h5>
+                                <h5 class="mb-0 text-primary">@Model.Basket.FormattedTotalPrice</h5>
+                            </div>
+                        }
+
+                        <button type="submit" class="btn btn-success btn-lg w-100 mb-2">
+                            <i class="bi bi-check-circle"></i> Ödemeyi Tamamla
+                        </button>
+
+                        <a asp-page="/Basket/Basket" class="btn btn-outline-secondary w-100">
+                            <i class="bi bi-arrow-left"></i> Sepete Dön
+                        </a>
+                    </div>
+
+                    <div class="card-footer bg-light">
+                        <small class="text-muted">
+                            <i class="bi bi-shield-check"></i> Güvenli ödeme garantisi
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
