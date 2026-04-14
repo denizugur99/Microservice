@@ -59,7 +59,7 @@ namespace Microservice.Order.Application.Features.Orders.Create
 
             
             paymentStatus = order.Status.ToString();
-            await topicProducer.Produce(new OrderCreatedEvent(order.Id,identityService.GetUserId));
+            await topicProducer.Produce(new OrderCreatedEvent(order.Id,identityService.GetUserId,identityService.GetUserEmail));
             var notificationEvent=new OrderCreatedNotificationEvent(identityService.GetUserEmail,order.Id);
             await notificationTopicProducer.Produce(notificationEvent, cancellationToken);
 

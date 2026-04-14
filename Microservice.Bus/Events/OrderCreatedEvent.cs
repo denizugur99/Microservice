@@ -4,6 +4,6 @@ using System.Text;
 
 namespace Microservice.Bus.Events
 {
-    public record OrderCreatedEvent(Guid OrderId, Guid UserId);
+    public record OrderCreatedEvent(Guid OrderId, Guid UserId,string Email);
     
 }

@@ -5,7 +5,7 @@ using Microservice.Discount.API.Repositories;
 
 namespace Microservice.Discount.API.Consumer
 {
-    public class OrderCreatedEventConsumer(IServiceProvider serviceProvider) : IConsumer<OrderCreatedEvent>
+    public class OrderCreatedEventConsumer(IServiceProvider serviceProvider,ITopicProducer<DiscountNotificationEvent> topicProducer) : IConsumer<OrderCreatedEvent>
     {
 
 
@@ -23,6 +23,9 @@ namespace Microservice.Discount.API.Consumer
                 Rate = 0.1f
 
             };
+            var notificationEvent = new DiscountNotificationEvent(context.Message.Email, discount.Code);
+            await topicProducer.Produce(notificationEvent);
+           
             await appdbContext.Discounts.AddAsync(discount);
             await appdbContext.SaveChangesAsync();
 
