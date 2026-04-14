@@ -3,7 +3,7 @@ using Microservices.Shared.Services;
 
 namespace Microservice.Discount.API.Features.Discount.GetDiscountByCode
 {
-    public class GetDiscountCodeQueryHandler(AppDbContext context, IIdentityService identityService) : IRequestHandler<GetDiscountByCodeQuery, ServiceResult<DiscountDto>>
+    public class GetDiscountCodeQueryHandler(AppDbContext context) : IRequestHandler<GetDiscountByCodeQuery, ServiceResult<DiscountDto>>
     {
         public async Task<ServiceResult<DiscountDto>> Handle(GetDiscountByCodeQuery request, CancellationToken cancellationToken)
         {

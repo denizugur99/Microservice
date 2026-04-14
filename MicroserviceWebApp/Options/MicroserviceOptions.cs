@@ -6,6 +6,7 @@
         public required MicroServiceOptionItem Basket { get; set; }
         public required MicroServiceOptionItem Order { get; set; }
         public required MicroServiceOptionItem File { get; set; }
+        public required MicroServiceOptionItem Discount { get; set; }
     }
     public class MicroServiceOptionItem
     {

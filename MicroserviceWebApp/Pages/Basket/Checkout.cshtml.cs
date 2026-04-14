@@ -120,6 +120,12 @@ namespace MicroserviceWebApp.Pages.Basket
 
             var orderResponse = result.Data!;
 
+            // Discount code'unu PaymentSuccess sayfasına taşı
+            if (currentBasket.HasDiscount)
+            {
+                TempData["DiscountCode"] = currentBasket.Discount!.Coupon;
+            }
+
             // Redirect based on payment status
             return orderResponse.PaymentStatus switch
             {

@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace MicroserviceWebApp.Pages.Basket
 {
     [Authorize]
-    public class BasketModel(BasketService basketService) : PageModel
+    public class BasketModel(BasketService basketService, DiscountService discountService) : PageModel
     {
         public BasketViewModel? Basket { get; set; }
 
@@ -42,16 +42,25 @@ namespace MicroserviceWebApp.Pages.Basket
             return RedirectToPage();
         }
 
-        public async Task<IActionResult> OnPostApplyDiscountAsync(string coupon, float rate)
+        public async Task<IActionResult> OnPostApplyDiscountAsync(string coupon)
         {
-            var result = await basketService.ApplyDiscountAsync(coupon, rate);
+            // Önce Discount API'den rate'i çek
+            var discountResult = await discountService.GetDiscountByCodeAsync(coupon);
+            if (discountResult.IsFail)
+            {
+                Message = "Geçersiz kupon kodu veya kupon süresi dolmuş!";
+                return RedirectToPage();
+            }
+
+            // Rate'i alıp Basket API'ye uygula
+            var result = await basketService.ApplyDiscountAsync(discountResult.Data.Code, discountResult.Data.Rate);
             if (result.IsFail)
             {
                 Message = "İndirim kuponu uygulanırken bir hata oluştu.";
             }
             else
             {
-                Message = $"{coupon} kuponu başarıyla uygulandı!";
+                Message = $"{discountResult.Data.Code} kuponu başarıyla uygulandı! %{discountResult.Data.Rate * 100:N0} indirim";
             }
             return RedirectToPage();
         }

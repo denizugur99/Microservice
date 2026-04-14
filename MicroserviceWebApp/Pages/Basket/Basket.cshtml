@@ -100,16 +100,15 @@
                         {
                             <form method="post" asp-page-handler="ApplyDiscount" class="row g-2">
                                 <div class="col-auto flex-grow-1">
-                                    <input type="text" name="coupon" class="form-control" placeholder="Kupon kodunuzu girin (örn: SUMMER2024)" required />
+                                    <input type="text" name="coupon" class="form-control" placeholder="Kupon kodunuzu girin" required />
                                 </div>
-                                <input type="hidden" name="rate" value="0.30" />
                                 <div class="col-auto">
                                     <button type="submit" class="btn btn-primary">
                                         <i class="bi bi-percent"></i> Uygula
                                     </button>
                                 </div>
                                 <small class="text-muted mt-2">
-                                    <i class="bi bi-info-circle"></i> Geçerli kupon kodu giriniz. İndirim oranı otomatik hesaplanacaktır.
+                                    <i class="bi bi-info-circle"></i> Geçerli kupon kodu giriniz. İndirim oranı otomatik olarak database'den çekilecektir.
                                 </small>
                             </form>
                         }

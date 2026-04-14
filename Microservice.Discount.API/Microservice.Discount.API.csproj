@@ -16,4 +16,8 @@
     <ProjectReference Include="..\Shared\Microservices.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Discount\DeleteDiscount\" />
+  </ItemGroup>
+
 </Project>

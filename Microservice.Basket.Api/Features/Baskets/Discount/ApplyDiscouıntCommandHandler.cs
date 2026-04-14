@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microservices.Shared;
+using Microservices.Shared.Services;
 using System.Net;
 
 namespace Microservice.Basket.Api.Features.Baskets.Discount
@@ -20,6 +21,7 @@ namespace Microservice.Basket.Api.Features.Baskets.Discount
             {
                 return ServiceResult.Error("Basket item not found", HttpStatusCode.NotFound);
             }
+           
 
             basket.ApplyNewDiscount(request.Coupon, request.Rate);
             await basketService.SaveBasketToCache(basket, cancellationToken);
