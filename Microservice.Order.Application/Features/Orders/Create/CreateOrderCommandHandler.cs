@@ -14,7 +14,7 @@ using System.Text;
 
 namespace Microservice.Order.Application.Features.Orders.Create
 {
-    public class CreateOrderCommandHandler(IOrderRepository orderRepository,IGenericRepository<int,Address> addressRepository,IIdentityService identityService,IUnitOfWork unitOfWork,ITopicProducer<OrderCreatedEvent> topicProducer,IPaymentService paymentService) : IRequestHandler<CreateOrderComand, ServiceResult<CreateOrderResponse>>
+    public class CreateOrderCommandHandler(IOrderRepository orderRepository,IGenericRepository<int,Address> addressRepository,IIdentityService identityService,IUnitOfWork unitOfWork,ITopicProducer<OrderCreatedEvent> topicProducer,IPaymentService paymentService,ITopicProducer<OrderCreatedNotificationEvent> notificationTopicProducer) : IRequestHandler<CreateOrderComand, ServiceResult<CreateOrderResponse>>
     {
         public async Task<ServiceResult<CreateOrderResponse>> Handle(CreateOrderComand request, CancellationToken cancellationToken)
         {
@@ -60,6 +60,8 @@ namespace Microservice.Order.Application.Features.Orders.Create
             
             paymentStatus = order.Status.ToString();
             await topicProducer.Produce(new OrderCreatedEvent(order.Id,identityService.GetUserId));
+            var notificationEvent=new OrderCreatedNotificationEvent(identityService.GetUserEmail,order.Id);
+            await notificationTopicProducer.Produce(notificationEvent, cancellationToken);
 
             var successResponse = new CreateOrderResponse(order.Id, paymentStatus);
             return ServiceResult<CreateOrderResponse>.SuccesAsOkay(successResponse);

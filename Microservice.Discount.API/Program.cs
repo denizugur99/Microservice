@@ -31,6 +31,7 @@ builder.Services.AddMassTransit(x =>
     {
         // Producer: Topic'i oluşturmak için (mesaj göndermese de topic oluşur)
         rider.AddProducer<OrderCreatedEvent>("Order-created-events");
+        rider.AddProducer<DiscountNotificationEvent>("Discount-notification-events");
 
         // Consumer: OrderCreatedEvent dinle
         rider.AddConsumer<OrderCreatedEventConsumer>();

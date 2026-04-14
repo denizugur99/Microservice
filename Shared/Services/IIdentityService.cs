@@ -9,5 +9,7 @@ namespace Microservices.Shared.Services
         public Guid GetUserId {  get; }
         public string GetUserName { get; }
         public List<string> Roles => [];
+
+        public string GetUserEmail { get; }
     }
 }

@@ -38,5 +38,16 @@ namespace Microservices.Shared.Services
                 return httpContextAccessor.HttpContext!.User.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value).ToList();
             }
         }
+        public string GetUserEmail
+        {
+            get
+            {
+                if (!httpContextAccessor.HttpContext!.User.Identity!.IsAuthenticated)
+                {
+                    throw new Exception("User is not authenticated");
+                }
+                return httpContextAccessor.HttpContext!.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value!;
+            }
+        }
     }
 }

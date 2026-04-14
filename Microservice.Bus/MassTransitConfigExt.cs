@@ -25,6 +25,7 @@ namespace Microservice.Bus
 
                 configure.AddRider(rider =>
                 {
+                    rider.AddProducer<OrderCreatedNotificationEvent>("Order-created-notification-events");
                     rider.AddProducer<CoursePictureUploadedEvent>("Picture-uploaded-events");
                     rider.AddProducer<UploadCoursePictureCommand>("Order-events");
                     rider.AddProducer<OrderCreatedEvent>("Order-created-events");
