@@ -19,7 +19,7 @@ namespace Microservice.Discount.API.Consumer
                 Code = DiscountCodeGenerator.GenerateCode(),
                 Created = DateTimeOffset.UtcNow,
                 Expire = DateTimeOffset.UtcNow.AddMonths(1),
-                UserId = context.Message.UserId,
+              
                 Rate = 0.1f
 
             };

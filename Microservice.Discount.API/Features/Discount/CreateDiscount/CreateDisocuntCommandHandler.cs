@@ -13,7 +13,7 @@ namespace Microservice.Discount.API.Features.Discount.CreateDiscount
         {
            
 
-            var hasCode=await context.Discounts.AnyAsync(x => x.Code == request.Code && x.UserId == request.UserId, cancellationToken);
+            var hasCode=await context.Discounts.AnyAsync(x => x.Code == request.Code , cancellationToken);
             if (hasCode)
             {
                 return ServiceResult.Error("Code already exists for this user", HttpStatusCode.BadRequest);
@@ -25,7 +25,7 @@ namespace Microservice.Discount.API.Features.Discount.CreateDiscount
                 Code=request.Code,
                 Created= DateTimeOffset.UtcNow,
                 Expire=request.ExpireDate,
-                UserId=request.UserId,
+               
                 Rate=request.Rate
 
             };

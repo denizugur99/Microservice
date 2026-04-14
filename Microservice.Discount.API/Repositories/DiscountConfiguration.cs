@@ -16,7 +16,7 @@ namespace Microservice.Discount.API.Repositories
             builder.Property(x => x.Created).HasElementName("created");
             builder.Property(x => x.Updated).HasElementName("updated");
             builder.Property(x => x.Expire).HasElementName("expired");
-            builder.Property(x => x.UserId).HasElementName("user_id");
+           
 
         }
     }
