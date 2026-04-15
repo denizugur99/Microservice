@@ -38,7 +38,9 @@
       "Bash(Select-Object Id,ProcessName,StartTime)",
       "Bash(Format-Table)",
       "Bash(tasklist:*)",
-      "Bash(dotnet build-server:*)"
+      "Bash(dotnet build-server:*)",
+      "Bash(git stash pop:*)",
+      "Bash(git check-ignore:*)"
     ]
   }
 }

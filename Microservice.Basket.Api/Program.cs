@@ -58,11 +58,12 @@ builder.Services.AddMassTransit(x =>
         });
     });
 });
+builder.AddRedisDistributedCache("redisBasketDb");
 
-builder.Services.AddStackExchangeRedisCache(opt =>
-{
-    opt.Configuration = builder.Configuration.GetConnectionString("Redis");
-});
+//builder.Services.AddStackExchangeRedisCache(opt =>
+//{
+//    opt.Configuration = builder.Configuration.GetConnectionString("Redis");
+//});
 builder.Services.AddScoped<BasketService>();
 builder.Services.AddVersionExt();
 builder.Services.AddAuthenticationExt(builder.Configuration);

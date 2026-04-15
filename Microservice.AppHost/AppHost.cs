@@ -2,40 +2,47 @@ using Microsoft.Extensions.Validation;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 var builder = DistributedApplication.CreateBuilder(args);
-
-//mongo.db.catalog:
-//    image: mongo: latest
-//    container_name: mongodb
-//    restart: always
-//    ports:
-//      -"27017:27017"
-//    environment:
-//MONGO_INITDB_ROOT_USERNAME: ${ MONGO_USERNAME}
-//MONGO_INITDB_ROOT_PASSWORD: ${ MONGO_PASSWORD}
-//volumes:
-//-mongodb_data:/ data / db
-
-var mongoUser=builder.AddParameter("MONGO-USERNAME");
+#region Catalog
+var mongoUser =builder.AddParameter("MONGO-USERNAME");
 var mongoPassword=builder.AddParameter("MONGO-PASSWORD");
-
 var catalogmongoDB=builder.AddMongoDB("catalogmongoDB",27017,mongoUser,mongoPassword).WithImage("mongo: latest").WithDataVolume("mongodb_data").AddDatabase("CatalogDb");
+var catalogApi=builder.AddProject<Projects.Microservice_Catalog_Api>("microservice-catalog-api");
+catalogApi.WithReference(catalogmongoDB).WaitFor(catalogmongoDB);
+#endregion
 
+#region Basket
+var redisPassword =builder.AddParameter("REDIS-PASSWORD");
+var redisBasketDb=builder.AddRedis("redisBasketDb").WithImage("redis: latest").WithDataVolume("redis_data").WithPassword(redisPassword);
+var basketApi=  builder.AddProject<Projects.Microservice_Basket_Api>("microservice-basket-api");
+basketApi.WithReference(redisBasketDb);
+#endregion
 
-builder.AddProject<Projects.Microservice_Basket_Api>("microservice-basket-api");
+#region Discount
+var mongoDiscountUser = builder.AddParameter("MONGO-USERNAME");
+var mongoDiscountPassword = builder.AddParameter("MONGO-PASSWORD");
+var discountMongoDB = builder.AddMongoDB("discountMongoDB", 27018, mongoDiscountUser, mongoDiscountPassword).WithImage("mongo: latest").WithDataVolume("mongodb_discount_data").AddDatabase("DiscountDb");
+var discountApi = builder.AddProject<Projects.Microservice_Discount_API>("microservice-discount-api");
+discountApi.WithReference(discountMongoDB).WaitFor(discountMongoDB);
+#endregion
 
-builder.AddProject<Projects.Microservice_Catalog_Api>("microservice-catalog-api");
+#region File
+var fileApi = builder.AddProject<Projects.Microservice_File_Api>("microservice-file-api");
+#endregion
 
-builder.AddProject<Projects.Microservice_Discount_API>("microservice-discount-api");
+#region Payment
+var paymentApi =builder.AddProject<Projects.Microservice_Payment_Api>("microservice-payment-api");
+#endregion
+
 
 builder.AddProject<Projects.microservice_Email>("microservice-email");
 
-builder.AddProject<Projects.Microservice_File_Api>("microservice-file-api");
+
 
 builder.AddProject<Projects.Microservice_Gateway>("microservice-gateway");
 
 builder.AddProject<Projects.Microservice_Order_Api>("microservice-order-api");
 
-builder.AddProject<Projects.Microservice_Payment_Api>("microservice-payment-api");
+
 
 builder.AddProject<Projects.MicroserviceWebApp>("microservicewebapp");
 
