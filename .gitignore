@@ -363,6 +363,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # Email service sensitive configuration
+microservice.Email/appsettings.Development.json
 microservice.Email/appsettings.Development.json.env
 
 # Environment variables
