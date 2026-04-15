@@ -11,6 +11,8 @@ using Microservices.Shared.Extensions;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOptionsExt();
 builder.Services.AddDatabaseExt();
@@ -70,6 +72,8 @@ builder.Services.AddAuthenticationExt(builder.Configuration);
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 app.AddSeedDataExt().ContinueWith(x =>
 {

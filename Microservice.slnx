@@ -43,4 +43,6 @@
   <Project Path="docker-compose.dcproj">
     <Build />
   </Project>
+  <Project Path="Microservice.AppHost/Microservice.AppHost.csproj" Id="421aabd3-a838-42e7-9dcd-6b3c1b27a61b" />
+  <Project Path="Microservice.ServiceDefaults/Microservice.ServiceDefaults.csproj" />
 </Solution>

@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Microservice.Order.Application\Microservice.Order.Application.csproj" />
     <ProjectReference Include="..\Microservice.Order.Persistence\Microservice.Order.Persistence.csproj" />
+    <ProjectReference Include="..\Microservice.ServiceDefaults\Microservice.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>

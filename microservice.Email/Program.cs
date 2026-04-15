@@ -8,6 +8,8 @@ using Microservice.Bus.Events;
 
 var builder = Host.CreateApplicationBuilder(args);
 
+builder.AddServiceDefaults();
+
 // Email Settings Configuration
 var emailSettings = builder.Configuration.GetSection("EmailSettings").Get<EmailSettings>()
     ?? throw new InvalidOperationException("EmailSettings configuration is missing");

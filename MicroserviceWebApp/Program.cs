@@ -13,6 +13,8 @@ using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.AddServiceDefaults();
+
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddMvc(opt=>opt.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes=true);
@@ -70,6 +72,8 @@ builder.Services.AddAuthentication(x =>
 });
 builder.Services.AddAuthorization();
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 var cultureInfo = new System.Globalization.CultureInfo("en-US");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
