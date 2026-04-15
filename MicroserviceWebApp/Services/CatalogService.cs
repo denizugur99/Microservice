@@ -80,7 +80,8 @@ namespace MicroserviceWebApp.Services
                 CategoryName = c.Category.Name,
                 Duration = c.Feature.Duration,
                 Rating = c.Feature.Rating,
-                UserName = c.Feature.EducatorFullName
+                UserName = c.Feature.EducatorFullName,
+                UserId = c.UserId
             }).ToList();
             return ServiceResult<List<CourseViewModel>>.SuccesAsOkay(courses);
         }
@@ -105,7 +106,8 @@ namespace MicroserviceWebApp.Services
                 CategoryName = c.Category.Name,
                 Duration = c.Feature.Duration,
                 Rating = c.Feature.Rating,
-                UserName = c.Feature.EducatorFullName
+                UserName = c.Feature.EducatorFullName,
+                UserId = c.UserId
             }).ToList();
             return ServiceResult<List<CourseViewModel>>.SuccesAsOkay(courses);
         }
@@ -147,7 +149,8 @@ namespace MicroserviceWebApp.Services
                 CategoryName = course.Category.Name,
                 Duration = course.Feature.Duration,
                 Rating = course.Feature.Rating,
-                UserName = course.Feature.EducatorFullName
+                UserName = course.Feature.EducatorFullName,
+                UserId = course.UserId
             };
 
             return ServiceResult<CourseViewModel>.SuccesAsOkay(courseViewModel);

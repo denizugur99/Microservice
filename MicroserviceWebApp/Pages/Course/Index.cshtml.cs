@@ -6,9 +6,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace MicroserviceWebApp.Pages.Course
 {
-    public class CourseIndexModel(CatalogService catalogService, BasketService basketService) : PageModel
+    public class CourseIndexModel(CatalogService catalogService, BasketService basketService, UserService userService) : PageModel
     {
         public List<CourseViewModel> CoursesViewModel { get; set; } = null!;
+        public Guid? CurrentUserId { get; set; }
 
         [TempData]
         public string? Message { get; set; }
@@ -19,18 +20,33 @@ namespace MicroserviceWebApp.Pages.Course
             if (result.IsFail)
             {
                 //TODO: hata sayfasına yönlendirme yapılacak
+                CoursesViewModel = new List<CourseViewModel>();
+                return;
             }
-            else
+
+            if (User.Identity?.IsAuthenticated == true)
             {
-                CoursesViewModel = result.Data!;
+                CurrentUserId = userService.GetUserId;
             }
+
+            CoursesViewModel = result.Data!;
+
         }
 
-        public async Task<IActionResult> OnPostAddToBasketAsync(Guid courseId, string courseName, decimal coursePrice, string imageUrl)
+        public async Task<IActionResult> OnPostAddToBasketAsync(Guid courseId, string courseName, decimal coursePrice, string imageUrl, Guid userId)
         {
             if (!User.Identity?.IsAuthenticated ?? true)
             {
                 return RedirectToPage("/Auth/SignIn");
+            }
+
+            var currentUserId = userService.GetUserId;
+
+            // Kullanıcının kendi kursunu sepete eklemeye çalışıp çalışmadığını kontrol et
+            if (currentUserId == userId)
+            {
+                Message = "Kendi kursunuzu sepete ekleyemezsiniz!";
+                return RedirectToPage();
             }
 
             var request = new AddBasketItemRequest(courseId, courseName, coursePrice, imageUrl);

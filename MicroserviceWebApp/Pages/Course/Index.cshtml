@@ -12,6 +12,14 @@
         </div>
     </div>
 
+    @if (!string.IsNullOrEmpty(Model.Message))
+    {
+        <div class="alert alert-@(Model.Message.Contains("başarıyla") ? "success" : "warning") alert-dismissible fade show" role="alert">
+            <i class="bi bi-@(Model.Message.Contains("başarıyla") ? "check-circle" : "exclamation-triangle")"></i> @Model.Message
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
     @if (Model.CoursesViewModel == null || !Model.CoursesViewModel.Any())
     {
         <div class="alert alert-info" role="alert">
@@ -50,15 +58,23 @@
                                         </a>
                                         @if (User.Identity?.IsAuthenticated == true)
                                         {
-                                            <form method="post" asp-page-handler="AddToBasket" class="d-inline">
-                                                <input type="hidden" name="courseId" value="@course.Id" />
-                                                <input type="hidden" name="courseName" value="@course.Name" />
-                                                <input type="hidden" name="coursePrice" value="@course.Price" />
-                                                <input type="hidden" name="imageUrl" value="@course.ImageUrl" />
-                                                <button type="submit" class="btn btn-success btn-sm">
-                                                    <i class="bi bi-cart-plus"></i> Sepete Ekle
-                                                </button>
-                                            </form>
+                                            @if (Model.CurrentUserId.HasValue && Model.CurrentUserId.Value == course.UserId)
+                                            {
+                                                <span class="badge bg-info text-white align-self-center">Sizin Kursunuz</span>
+                                            }
+                                            else
+                                            {
+                                                <form method="post" asp-page-handler="AddToBasket" class="d-inline">
+                                                    <input type="hidden" name="courseId" value="@course.Id" />
+                                                    <input type="hidden" name="courseName" value="@course.Name" />
+                                                    <input type="hidden" name="coursePrice" value="@course.Price" />
+                                                    <input type="hidden" name="imageUrl" value="@course.ImageUrl" />
+                                                    <input type="hidden" name="userId" value="@course.UserId" />
+                                                    <button type="submit" class="btn btn-success btn-sm">
+                                                        <i class="bi bi-cart-plus"></i> Sepete Ekle
+                                                    </button>
+                                                </form>
+                                            }
                                         }
                                     </div>
                                 </div>

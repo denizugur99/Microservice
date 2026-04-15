@@ -7,6 +7,7 @@
         public string Description { get; set; } = default!;
         public string ImageUrl { get; set; } = default!;
         public decimal Price { get; set; }
+        public Guid UserId { get; set; }
         public Guid CategoryId { get; set; }
         public string CategoryName { get; set; } = default!;
         public int Duration { get; set; }
