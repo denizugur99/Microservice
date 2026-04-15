@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.MongoDB" Version="13.2.2" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Microservice.Basket.Api\Microservice.Basket.Api.csproj" />
     <ProjectReference Include="..\Microservice.Catalog.Api\Microservice.Catalog.Api.csproj" />
     <ProjectReference Include="..\Microservice.Discount.API\Microservice.Discount.API.csproj" />

@@ -1,4 +1,25 @@
+using Microsoft.Extensions.Validation;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 var builder = DistributedApplication.CreateBuilder(args);
+
+//mongo.db.catalog:
+//    image: mongo: latest
+//    container_name: mongodb
+//    restart: always
+//    ports:
+//      -"27017:27017"
+//    environment:
+//MONGO_INITDB_ROOT_USERNAME: ${ MONGO_USERNAME}
+//MONGO_INITDB_ROOT_PASSWORD: ${ MONGO_PASSWORD}
+//volumes:
+//-mongodb_data:/ data / db
+
+var mongoUser=builder.AddParameter("MONGO-USERNAME");
+var mongoPassword=builder.AddParameter("MONGO-PASSWORD");
+
+var catalogmongoDB=builder.AddMongoDB("catalogmongoDB",27017,mongoUser,mongoPassword).WithImage("mongo: latest").WithDataVolume("mongodb_data").AddDatabase("CatalogDb");
+
 
 builder.AddProject<Projects.Microservice_Basket_Api>("microservice-basket-api");
 
