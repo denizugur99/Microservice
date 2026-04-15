@@ -36,7 +36,8 @@
       "Bash(netstat:*)",
       "Bash(Get-Process -Name \"Microservice.File.Api\" -ErrorAction SilentlyContinue)",
       "Bash(Select-Object Id,ProcessName,StartTime)",
-      "Bash(Format-Table)"
+      "Bash(Format-Table)",
+      "Bash(git ls-tree:*)"
     ]
   }
 }

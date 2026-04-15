@@ -20,7 +20,9 @@ namespace Microservice.File.Api.Consumer
                
                 await System.IO.File.WriteAllBytesAsync(uploadPath, context.Message.picture);
                 var publish = scope.ServiceProvider.GetRequiredService<ITopicProducer<CoursePictureUploadedEvent>>();
-                await publish.Produce(new CoursePictureUploadedEvent(context.Message.courseId,$"files/{newFileName}"));
+                var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+                var fileApiBaseUrl = configuration["FileApiBaseUrl"] ?? "http://localhost:5237";
+                await publish.Produce(new CoursePictureUploadedEvent(context.Message.courseId,$"{fileApiBaseUrl}/files/{newFileName}"));
             }
            
 

@@ -1,0 +1,185 @@
+
+services:
+  microservice.basket.api:
+    container_name: basket-api
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__Redis=redis.db.basket:6379,password=mypassword
+      - BusOptions__Host=kafka
+      - BusOptions__Port=9092
+      - IdentityOption__Issuer=http://keycloak.auth:8080/realms/microserviceTenant
+      - IdentityOption__Address=http://keycloak.auth:8080/realms/microserviceTenant
+      - IdentityOption__Audience=basket.api
+    ports:
+      - "5223:8080"
+    depends_on:
+      - redis.db.basket
+      - kafka
+      - keycloak.auth
+
+  microservice.catalog.api:
+    container_name: catalog-api
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - MongoOptions__DatabaseName=CatalogDb
+      - MongoOptions__ConnectionString=mongodb://myuser:mypassword@mongo.db.catalog:27017
+      - BusOptions__Host=kafka
+      - BusOptions__Port=9092
+      - IdentityOption__Issuer=http://keycloak.auth:8080/realms/microserviceTenant
+      - IdentityOption__Address=http://keycloak.auth:8080/realms/microserviceTenant
+      - IdentityOption__Audience=catalog.api
+    ports:
+      - "5100:8080"
+    depends_on:
+      - mongo.db.catalog
+      - kafka
+      - keycloak.auth
+
+  microservice.discount.api:
+    container_name: discount-api
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - MongoOptions__DatabaseName=DiscountDb
+      - MongoOptions__ConnectionString=mongodb://myuser:mypassword@mongo.db.discount:27017
+      - BusOptions__Host=kafka
+      - BusOptions__Port=9092
+      - IdentityOption__Issuer=http://keycloak.auth:8080/realms/microserviceTenant
+      - IdentityOption__Address=http://keycloak.auth:8080/realms/microserviceTenant
+      - IdentityOption__Audience=discount.api
+    ports:
+      - "5196:8080"
+    depends_on:
+      - mongo.db.discount
+      - kafka
+      - keycloak.auth
+
+  microservice.email:
+    container_name: email-service
+    restart: always
+    environment:
+      - DOTNET_ENVIRONMENT=Development
+      - BusOptions__Host=kafka
+      - BusOptions__Port=9092
+    depends_on:
+      - kafka
+
+  microservice.file.api:
+    container_name: file-api
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - BusOptions__Host=kafka
+      - BusOptions__Port=9092
+      - IdentityOption__Issuer=http://keycloak.auth:8080/realms/microserviceTenant
+      - IdentityOption__Address=http://keycloak.auth:8080/realms/microserviceTenant
+      - IdentityOption__Audience=file.api
+      - FileApiBaseUrl=http://localhost:5237
+    ports:
+      - "5237:8080"
+    depends_on:
+      - kafka
+      - keycloak.auth
+    volumes:
+      - ./Microservice.File.Api/wwwroot/files:/app/wwwroot/files
+
+  microservice.gateway:
+    container_name: gateway
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ReverseProxy__Clusters__basket-cluster__Destinations__destination1__Address=http://microservice.basket.api:8080
+      - ReverseProxy__Clusters__catalog-cluster__Destinations__destination1__Address=http://microservice.catalog.api:8080
+      - ReverseProxy__Clusters__discount-cluster__Destinations__destination1__Address=http://microservice.discount.api:8080
+      - ReverseProxy__Clusters__file-cluster__Destinations__destination1__Address=http://microservice.file.api:8080
+      - ReverseProxy__Clusters__order-cluster__Destinations__destination1__Address=http://microservice.order.api:8080
+      - ReverseProxy__Clusters__payment-cluster__Destinations__destination1__Address=http://microservice.payment.api:8080
+      - IdentityOption__Issuer=http://keycloak.auth:8080/realms/microserviceTenant
+      - IdentityOption__Address=http://keycloak.auth:8080/realms/microserviceTenant
+      - IdentityOption__Audience=gateway.api
+    ports:
+      - "5000:8080"
+    depends_on:
+      - microservice.basket.api
+      - microservice.catalog.api
+      - microservice.discount.api
+      - microservice.file.api
+      - microservice.order.api
+      - microservice.payment.api
+      - keycloak.auth
+
+  microservice.order.api:
+    container_name: order-api
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__SqlServer=Server=sqlserver.db.order,1433;Database=OrderDb;User Id=sa;Password=MyP@ssw0rd123;TrustServerCertificate=True;
+      - BusOptions__Host=kafka
+      - BusOptions__Port=9092
+      - IdentityOption__Issuer=http://keycloak.auth:8080/realms/microserviceTenant
+      - IdentityOption__Address=http://keycloak.auth:8080/realms/microserviceTenant
+      - IdentityOption__Audience=order.api
+      - AddressUrlOption__PaymentUrl=http://microservice.payment.api:8080
+    ports:
+      - "5174:8080"
+    depends_on:
+      - sqlserver.db.order
+      - kafka
+      - keycloak.auth
+      - microservice.payment.api
+      - microservice.basket.api
+
+  microservice.payment.api:
+    container_name: payment-api
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - BusOptions__Host=kafka
+      - BusOptions__Port=9092
+      - IdentityOption__Issuer=http://keycloak.auth:8080/realms/microserviceTenant
+      - IdentityOption__Address=http://keycloak.auth:8080/realms/microserviceTenant
+      - IdentityOption__Audience=payment.api
+    ports:
+      - "5169:8080"
+    depends_on:
+      - kafka
+      - keycloak.auth
+
+  microservicewebapp:
+    container_name: webapp
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - GatewayOption__BaseAddress=http://microservice.gateway:8080
+      - MicroserviceOptions__Catalog__BaseAddress=http://microservice.catalog.api:8080
+      - MicroserviceOptions__Basket__BaseAddress=http://microservice.basket.api:8080
+      - MicroserviceOptions__Order__BaseAddress=http://microservice.order.api:8080
+      - MicroserviceOptions__File__BaseAddress=http://microservice.file.api:8080
+      - MicroserviceOptions__Discount__BaseAddress=http://microservice.discount.api:8080
+      - IdentityOption__Address=http://keycloak.auth:8080/realms/microserviceTenant
+      - IdentityOption__BaseAddress=http://keycloak.auth:8080
+      - IdentityOption__Web__ClientId=web
+      - IdentityOption__Web__ClientSecret=bD1kN4QrcppJIVQoL3F2f3kAng8f1rWQ
+      - IdentityOption__Admin__ClientId=admin-cli
+      - IdentityOption__Admin__ClientSecret=WhnHjDpywasVLzuGoZFLjqnMetMzDACL
+    ports:
+      - "5050:8080"
+    depends_on:
+      - microservice.gateway
+      - microservice.catalog.api
+      - microservice.basket.api
+      - microservice.order.api
+      - microservice.file.api
+      - microservice.discount.api
+      - keycloak.auth
+
