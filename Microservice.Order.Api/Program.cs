@@ -27,10 +27,11 @@ builder.Services.AddOpenApi();
 builder.Services.AddCommonServiceExt(typeof(OrderApplicationAssembly));
 builder.Services.AddMassTransitExt(builder.Configuration);
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
-});
+//builder.Services.AddDbContext<AppDbContext>(options =>
+//{
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer"));
+//});
+builder.AddSqlServerDbContext<AppDbContext>("order-db-aspire");
 builder.Services.AddScoped(typeof(IGenericRepository<,>), typeof(GenericRepository<,>));
 builder.Services.AddVersionExt();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();

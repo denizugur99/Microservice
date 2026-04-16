@@ -33,6 +33,11 @@ var fileApi = builder.AddProject<Projects.Microservice_File_Api>("microservice-f
 var paymentApi =builder.AddProject<Projects.Microservice_Payment_Api>("microservice-payment-api");
 #endregion
 
+var sqlserverPassword=builder.AddParameter("SQLSERVER-PASSWORD");
+var sqlserverOrderDb=builder.AddSqlServer("sqlserver-db-order").WithPassword(sqlserverPassword).WithDataVolume("sqlserver_order_data").AddDatabase("order-db-aspire");
+ var orderApi = builder.AddProject<Projects.Microservice_Order_Api>("microservice-order-api");
+orderApi.WithReference(sqlserverOrderDb).WaitFor(sqlserverOrderDb);
+
 
 builder.AddProject<Projects.microservice_Email>("microservice-email");
 
@@ -40,7 +45,7 @@ builder.AddProject<Projects.microservice_Email>("microservice-email");
 
 builder.AddProject<Projects.Microservice_Gateway>("microservice-gateway");
 
-builder.AddProject<Projects.Microservice_Order_Api>("microservice-order-api");
+
 
 
 
