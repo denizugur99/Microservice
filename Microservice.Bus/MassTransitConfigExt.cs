@@ -14,7 +14,14 @@ namespace Microservice.Bus
     {
         public static IServiceCollection AddMassTransitExt(this IServiceCollection services, IConfiguration configuration)
         {
-            var busOptions = (configuration.GetSection(nameof(BusOptions)).Get<BusOptions>())!;
+            // Aspire'dan Kafka connection string'ini al
+            var kafkaConnectionString = configuration.GetConnectionString("kafka");
+
+            // Fallback to BusOptions if Aspire connection string is not available
+            var busOptions = configuration.GetSection(nameof(BusOptions)).Get<BusOptions>();
+            var bootstrapServers = !string.IsNullOrEmpty(kafkaConnectionString)
+                ? kafkaConnectionString
+                : busOptions?.BootstrapServers ?? "localhost:9094";
 
             services.AddMassTransit(configure =>
             {
@@ -33,7 +40,7 @@ namespace Microservice.Bus
 
                     rider.UsingKafka((context, kafka) =>
                     {
-                        kafka.Host(busOptions.BootstrapServers);
+                        kafka.Host(bootstrapServers);
 
                         // Producer mesaj boyutu limiti - 10MB
                         kafka.MessageMaxBytes = 10 * 1024 * 1024; // 10 MB

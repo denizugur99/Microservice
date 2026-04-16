@@ -39,8 +39,14 @@ builder.Services.AddMassTransit(x =>
     });
 
     // Kafka Configuration
-    var busOptions = builder.Configuration.GetSection("BusOptions").Get<BusOptions>()
-        ?? throw new InvalidOperationException("BusOptions configuration is missing");
+    // Aspire'dan Kafka connection string'ini al
+    var kafkaConnectionString = builder.Configuration.GetConnectionString("kafka");
+
+    // Fallback to BusOptions if Aspire connection string is not available
+    var busOptions = builder.Configuration.GetSection("BusOptions").Get<BusOptions>();
+    var bootstrapServers = !string.IsNullOrEmpty(kafkaConnectionString)
+        ? kafkaConnectionString
+        : busOptions?.Host != null ? $"{busOptions.Host}:{busOptions.Port}" : "localhost:9094";
 
     x.AddRider(rider =>
     {
@@ -54,7 +60,7 @@ builder.Services.AddMassTransit(x =>
 
         rider.UsingKafka((context, k) =>
         {
-            k.Host($"{busOptions.Host}:{busOptions.Port}");
+            k.Host(bootstrapServers);
 
             k.TopicEndpoint<OrderCreatedNotificationEvent>("Order-created-notification-events", "email-service-group", e =>
             {

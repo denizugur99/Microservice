@@ -36,25 +36,25 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddRefitClient<ICatalogRefitService>().ConfigureHttpClient((sp, config) =>
 {
     var microserviceOption = sp.GetRequiredService<MicroserviceOptions>();
-    config.BaseAddress = new Uri(microserviceOption.Catalog.BaseAddress);
+    config.BaseAddress = new Uri("http://microservice-catalog-api");
 }).AddHttpMessageHandler<AuthenticatedHttpClientHandler>().AddHttpMessageHandler<ClientAuthenticatedHttpClientHandler>();
 
 builder.Services.AddRefitClient<IBasketRefitService>().ConfigureHttpClient((sp, config) =>
 {
     var microserviceOption = sp.GetRequiredService<MicroserviceOptions>();
-    config.BaseAddress = new Uri(microserviceOption.Basket.BaseAddress);
+    config.BaseAddress = new Uri("http://microservice-basket-api");
 }).AddHttpMessageHandler<AuthenticatedHttpClientHandler>();
 
 builder.Services.AddRefitClient<IOrderRefitService>().ConfigureHttpClient((sp, config) =>
 {
     var microserviceOption = sp.GetRequiredService<MicroserviceOptions>();
-    config.BaseAddress = new Uri(microserviceOption.Order.BaseAddress);
+    config.BaseAddress = new Uri("http://microservice-order-api");
 }).AddHttpMessageHandler<AuthenticatedHttpClientHandler>();
 
 builder.Services.AddRefitClient<IDiscountRefitService>().ConfigureHttpClient((sp, config) =>
 {
     var microserviceOption = sp.GetRequiredService<MicroserviceOptions>();
-    config.BaseAddress = new Uri(microserviceOption.Discount.BaseAddress);
+    config.BaseAddress = new Uri("http://microservice-discount-api");
 }).AddHttpMessageHandler<AuthenticatedHttpClientHandler>().AddHttpMessageHandler<ClientAuthenticatedHttpClientHandler>();
 
 

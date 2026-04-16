@@ -40,7 +40,8 @@
       "Bash(tasklist:*)",
       "Bash(dotnet build-server:*)",
       "Bash(git stash pop:*)",
-      "Bash(git check-ignore:*)"
+      "Bash(git check-ignore:*)",
+      "Bash(dotnet user-secrets set:*)"
     ]
   }
 }
