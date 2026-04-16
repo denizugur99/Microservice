@@ -61,7 +61,7 @@ discountApi.WithReference(discountMongoDB).WaitFor(discountMongoDB).WithReferenc
 
 #region File
 var fileApi = builder.AddProject<Projects.Microservice_File_Api>("microservice-file-api");
-fileApi.WithReference(kafka).WithReference(keycloakEndpoint).WaitFor(keycloak);
+fileApi.WithReference(kafka).WaitFor(kafka).WithReference(keycloakEndpoint).WaitFor(keycloak);
 #endregion
 
 #region Payment
@@ -84,7 +84,7 @@ web.WithReference(basketApi).WithReference(discountApi).WithReference(fileApi).W
 
 
 
-builder.AddProject<Projects.microservice_Email>("microservice-email");
+builder.AddProject<Projects.microservice_Email>("microservice-email").WithReference(kafka).WaitFor(kafka);
 
 
 

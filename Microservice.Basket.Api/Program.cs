@@ -17,7 +17,15 @@ builder.Services.AddOpenApi();
 builder.Services.AddCommonServiceExt(typeof(BasketAssembly));
 
 // MassTransit + Kafka Consumer
-var busOptions = builder.Configuration.GetSection(nameof(BusOptions)).Get<BusOptions>() ?? new BusOptions();
+// Aspire'dan Kafka connection string'ini al
+var kafkaConnectionString = builder.Configuration.GetConnectionString("kafka");
+
+// Fallback to BusOptions if Aspire connection string is not available
+var busOptions = builder.Configuration.GetSection(nameof(BusOptions)).Get<BusOptions>();
+var bootstrapServers = !string.IsNullOrEmpty(kafkaConnectionString)
+    ? kafkaConnectionString
+    : busOptions?.BootstrapServers ?? "localhost:9094";
+
 builder.Services.AddMassTransit(x =>
 {
     x.UsingInMemory((context, cfg) =>
@@ -35,7 +43,7 @@ builder.Services.AddMassTransit(x =>
 
         rider.UsingKafka((context, kafka) =>
         {
-            kafka.Host(busOptions.BootstrapServers); // localhost:9094
+            kafka.Host(bootstrapServers);
 
             // Mesaj boyutu - 10MB
             kafka.MessageMaxBytes = 10 * 1024 * 1024;
