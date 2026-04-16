@@ -361,6 +361,3 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-
-# Email service sensitive configuration
-microservice.Email/appsettings.Development.json
