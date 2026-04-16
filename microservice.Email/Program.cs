@@ -89,8 +89,8 @@ builder.Services.AddMassTransit(x =>
     });
 });
 
-// Worker Service
-builder.Services.AddHostedService<Worker>();
+
+
 
 var host = builder.Build();
 host.Run();
