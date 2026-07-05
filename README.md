@@ -1,5 +1,8 @@
 # Microservice E-Learning Platform
 
+<!-- CI workflow test: verifying build + auto-merge pipeline -->
+
+
 A .NET 10.0 microservices solution for an e-learning platform with e-commerce capabilities. The solution uses a hybrid architecture: **vertical slice** for simple services and **clean architecture / DDD** for the Order service.
 
 ## Architecture Overview
