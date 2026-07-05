@@ -1,0 +1,33 @@
+name: CD Deploy (self-hosted)
+
+on:
+  push:
+    branches: [master]
+
+concurrency:
+  group: cd-deploy-master
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Copy local .env into workspace
+        shell: pwsh
+        run: |
+          Copy-Item -Path "D:\Reps\microservice\Microservice\.env" -Destination "$env:GITHUB_WORKSPACE\.env" -Force
+
+      - name: Build images
+        shell: pwsh
+        run: docker-compose build
+
+      - name: Deploy (up -d)
+        shell: pwsh
+        run: docker-compose up -d
+
+      - name: Show running containers
+        shell: pwsh
+        run: docker-compose ps
