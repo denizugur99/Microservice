@@ -137,7 +137,7 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_NUM_PARTITIONS: 3
-      # Message retention - 7 days
+      #Message retention - 7 days
       KAFKA_LOG_RETENTION_MS: 604800000
       KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS: 300000
       # Message size limits - 10MB
@@ -146,6 +146,15 @@ services:
       KAFKA_MAX_REQUEST_SIZE: 10485760
       # Auto create topics
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: true
+    volumes:
+      - kafka_data:/tmp/kafka-logs
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 15
+      start_period: 30s
+
   kafka-ui:
     container_name: kafka-ui
     restart: always
@@ -157,7 +166,80 @@ services:
       KAFKA_CLUSTERS_0_NAME: local
       KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
     depends_on:
-      - kafka
+      kafka:
+        condition: service_healthy
+
+  microservice.basket.api:
+    image: microservicebasketapi
+    build:
+      context: .
+      dockerfile: Microservice.Basket.Api/Dockerfile
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+  microservice.catalog.api:
+    image: microservicecatalogapi
+    build:
+      context: .
+      dockerfile: Microservice.Catalog.Api/Dockerfile
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+  microservice.discount.api:
+    image: microservicediscountapi
+    build:
+      context: .
+      dockerfile: Microservice.Discount.API/Dockerfile
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+  microservice.email:
+    image: microserviceemail
+    build:
+      context: .
+      dockerfile: microservice.Email/Dockerfile
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+  microservice.file.api:
+    image: microservicefileapi
+    build:
+      context: .
+      dockerfile: Microservice.File.Api/Dockerfile
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+  microservice.gateway:
+    image: microservicegateway
+    build:
+      context: .
+      dockerfile: Microservice.Gateway/Dockerfile
+
+  microservice.order.api:
+    image: microserviceorderapi
+    build:
+      context: .
+      dockerfile: Microservice.Order.Api/Dockerfile
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+  microservice.payment.api:
+    image: microservicepaymentapi
+    build:
+      context: .
+      dockerfile: Microservice.Payment.Api/Dockerfile
+
+  microservicewebapp:
+    image: microservicewebapp
+    build:
+      context: .
+      dockerfile: MicroserviceWebApp/Dockerfile
 
 volumes:
   mongodb_data:
@@ -166,4 +248,13 @@ volumes:
   sqlserver_order_data:
   postgres_keycloak_data:
   kafka_data:
+
+
+
+
+
+
+
+
+
 

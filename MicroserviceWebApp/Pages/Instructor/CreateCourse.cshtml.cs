@@ -26,6 +26,16 @@ namespace MicroserviceWebApp.Pages.Instructor
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (Input.Picture is not null && Input.Picture.Length > CreateCourseViewModel.MaxPictureSizeBytes)
+            {
+                var catalogResult = await catalogService.GetCategoriesAsync();
+                Input.SetCategoryDropdownList(catalogResult.Data ?? []);
+
+                ModelState.AddModelError(nameof(Input.Picture),
+                    $"Görsel boyutu en fazla {CreateCourseViewModel.MaxPictureSizeBytes / (1024 * 1024)}MB olabilir.");
+                return Page();
+            }
+
          var result =   await catalogService.CreateCourseAsync(Input);
             if (result.IsFail)
             {

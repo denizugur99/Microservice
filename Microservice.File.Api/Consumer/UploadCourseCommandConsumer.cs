@@ -20,7 +20,7 @@ namespace Microservice.File.Api.Consumer
                
                 await System.IO.File.WriteAllBytesAsync(uploadPath, context.Message.picture);
                 var publish = scope.ServiceProvider.GetRequiredService<ITopicProducer<CoursePictureUploadedEvent>>();
-                await publish.Produce(new CoursePictureUploadedEvent(context.Message.courseId,$"files/{newFileName}"));
+                await publish.Produce(new CoursePictureUploadedEvent(context.Message.courseId, $"files/{newFileName}"));
             }
            
 

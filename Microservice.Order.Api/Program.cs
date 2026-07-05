@@ -76,8 +76,17 @@ app.UseExceptionHandler(exceptionHandlerApp =>
     });
 });
 
-// Configure the HTTP request pipeline.
-app.UseAuthentication();
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider= scope.ServiceProvider;
+    var dbContext = serviceProvider.GetRequiredService<AppDbContext>();
+   await dbContext.Database.MigrateAsync();
+}
+
+
+
+    // Configure the HTTP request pipeline.
+    app.UseAuthentication();
 app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())

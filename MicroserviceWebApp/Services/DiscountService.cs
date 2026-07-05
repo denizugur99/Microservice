@@ -14,7 +14,7 @@ namespace MicroserviceWebApp.Services
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    logger.LogError("Error getting discount by code: {Code} - {StatusCode}", code, response.StatusCode);
+                    logger.LogError("Error getting discount by code: {0} - {1}", code, response.StatusCode);
 
                     // Eğer error content varsa parse et
                     if (!string.IsNullOrEmpty(response.Error?.Content))
@@ -54,7 +54,7 @@ namespace MicroserviceWebApp.Services
 
                 if (!response.IsSuccessStatusCode)
                 {
-                    logger.LogError("Error deleting discount: {Code} - {StatusCode}", code, response.StatusCode);
+                    logger.LogError("Error deleting discount: {0} - {1}", code, response.StatusCode);
                     return ServiceResult.Error("Failed to delete discount");
                 }
 
