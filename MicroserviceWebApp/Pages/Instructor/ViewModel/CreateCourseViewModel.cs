@@ -5,6 +5,8 @@ namespace MicroserviceWebApp.Pages.Instructor.ViewModel
 {
     public class CreateCourseViewModel
     {
+        public const long MaxPictureSizeBytes = 5 * 1024 * 1024;
+
         public static CreateCourseViewModel Empty => new();
         [Display(Name="Course Category")] public SelectList CategoryDropdownList { get; set; }= default!;
 

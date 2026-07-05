@@ -11,6 +11,7 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+ENV NUGET_CERT_REVOCATION_MODE=offline
 COPY ["MicroserviceWebApp/MicroserviceWebApp.csproj", "MicroserviceWebApp/"]
 RUN dotnet restore "./MicroserviceWebApp/MicroserviceWebApp.csproj"
 COPY . .

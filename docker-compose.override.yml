@@ -164,7 +164,7 @@ services:
       - MicroserviceOptions__Catalog__BaseAddress=http://microservice.catalog.api:8080
       - MicroserviceOptions__Basket__BaseAddress=http://microservice.basket.api:8080
       - MicroserviceOptions__Order__BaseAddress=http://microservice.order.api:8080
-      - MicroserviceOptions__File__BaseAddress=http://microservice.file.api:8080
+      - MicroserviceOptions__File__BaseAddress=http://localhost:5237
       - MicroserviceOptions__Discount__BaseAddress=http://microservice.discount.api:8080
       - IdentityOption__Address=http://keycloak.auth:8080/realms/microserviceTenant
       - IdentityOption__BaseAddress=http://keycloak.auth:8080

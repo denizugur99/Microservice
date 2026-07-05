@@ -38,8 +38,8 @@ builder.Services.AddMassTransit(x =>
         {
             kafka.Host(busOptions.BootstrapServers); // localhost:9094
 
-            // Mesaj boyutu - 10MB
-            kafka.MessageMaxBytes = 100 * 1024 * 1024;
+            // Mesaj boyutu - Kafka broker limiti ile uyumlu (KAFKA_MESSAGE_MAX_BYTES=10MB)
+            kafka.MessageMaxBytes = 10 * 1024 * 1024;
 
             // Topic dinle: Order-events
             kafka.TopicEndpoint<UploadCoursePictureCommand>(

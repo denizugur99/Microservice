@@ -42,9 +42,10 @@
 
                         <div class="mb-3">
                             <label asp-for="Input.Picture" class="form-label">Kurs Görseli</label>
-                            <input asp-for="Input.Picture" class="form-control" type="file" accept="image/*" />
+                            <input asp-for="Input.Picture" id="picture-input" class="form-control" type="file" accept="image/*" />
                             <span asp-validation-for="Input.Picture" class="text-danger"></span>
-                            <small class="form-text text-muted">Opsiyonel - JPEG, PNG veya GIF formatında</small>
+                            <div id="picture-size-error" class="text-danger small mt-1" style="display:none;"></div>
+                            <small class="form-text text-muted">Opsiyonel - JPEG, PNG veya GIF formatında (maksimum 5MB)</small>
                         </div>
 
                         <div class="d-grid gap-2">
@@ -60,4 +61,26 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            const maxSizeBytes = 5 * 1024 * 1024;
+            const input = document.getElementById('picture-input');
+            const errorBox = document.getElementById('picture-size-error');
+            const submitButton = document.querySelector('form button[type="submit"]');
+
+            input.addEventListener('change', function () {
+                const file = input.files && input.files[0];
+                if (file && file.size > maxSizeBytes) {
+                    errorBox.textContent = 'Görsel boyutu en fazla 5MB olabilir. Seçilen dosya ' +
+                        (file.size / (1024 * 1024)).toFixed(1) + 'MB.';
+                    errorBox.style.display = 'block';
+                    input.value = '';
+                    if (submitButton) submitButton.disabled = true;
+                } else {
+                    errorBox.style.display = 'none';
+                    if (submitButton) submitButton.disabled = false;
+                }
+            });
+        })();
+    </script>
 }
