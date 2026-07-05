@@ -12,8 +12,8 @@ namespace MicroserviceWebApp.Services
             var response = await basketRefitService.AddItemToBasketAsync(request);
             if (!response.IsSuccessStatusCode)
             {
-                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content!);
-                logger.LogError("Error adding item to basket: {StatusCode} - {Content}", response.StatusCode, response.Error.Content);
+                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(((global::Refit.ApiException)response.Error!).Content!);
+                logger.LogError("Error adding item to basket: {StatusCode} - {Content}", response.StatusCode, ((global::Refit.ApiException)response.Error!).Content);
                 return ServiceResult.Error(problemDetails!);
             }
             return ServiceResult.Success();
@@ -23,8 +23,8 @@ namespace MicroserviceWebApp.Services
             var response = await basketRefitService.GetBasketAsync();
             if (!response.IsSuccessStatusCode)
             {
-                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content!);
-                logger.LogError("Error retrieving basket: {StatusCode} - {Content}", response.StatusCode, response.Error.Content);
+                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(((global::Refit.ApiException)response.Error!).Content!);
+                logger.LogError("Error retrieving basket: {StatusCode} - {Content}", response.StatusCode, ((global::Refit.ApiException)response.Error!).Content);
                 return ServiceResult<BasketViewModel>.Error(problemDetails!);
             }
             var basket = new BasketViewModel()
@@ -56,8 +56,8 @@ namespace MicroserviceWebApp.Services
             var response = await basketRefitService.DeleteItemFromBasketAsync(courseId);
             if (!response.IsSuccessStatusCode)
             {
-                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content!);
-                logger.LogError("Error deleting item from basket: {StatusCode} - {Content}", response.StatusCode, response.Error.Content);
+                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(((global::Refit.ApiException)response.Error!).Content!);
+                logger.LogError("Error deleting item from basket: {StatusCode} - {Content}", response.StatusCode, ((global::Refit.ApiException)response.Error!).Content);
                 return ServiceResult.Error(problemDetails!);
             }
             return ServiceResult.Success();
@@ -69,8 +69,8 @@ namespace MicroserviceWebApp.Services
             var response = await basketRefitService.ApplyDiscountAsync(request);
             if (!response.IsSuccessStatusCode)
             {
-                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content!);
-                logger.LogError("Error applying discount: {StatusCode} - {Content}", response.StatusCode, response.Error.Content);
+                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(((global::Refit.ApiException)response.Error!).Content!);
+                logger.LogError("Error applying discount: {StatusCode} - {Content}", response.StatusCode, ((global::Refit.ApiException)response.Error!).Content);
                 return ServiceResult.Error(problemDetails!);
             }
             return ServiceResult.Success();
@@ -81,8 +81,8 @@ namespace MicroserviceWebApp.Services
             var response = await basketRefitService.RemoveDiscountAsync();
             if (!response.IsSuccessStatusCode)
             {
-                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content!);
-                logger.LogError("Error removing discount: {StatusCode} - {Content}", response.StatusCode, response.Error.Content);
+                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(((global::Refit.ApiException)response.Error!).Content!);
+                logger.LogError("Error removing discount: {StatusCode} - {Content}", response.StatusCode, ((global::Refit.ApiException)response.Error!).Content);
                 return ServiceResult.Error(problemDetails!);
             }
             return ServiceResult.Success();

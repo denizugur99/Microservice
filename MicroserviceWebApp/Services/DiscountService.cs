@@ -17,11 +17,11 @@ namespace MicroserviceWebApp.Services
                     logger.LogError("Error getting discount by code: {0} - {1}", code, response.StatusCode);
 
                     // Eğer error content varsa parse et
-                    if (!string.IsNullOrEmpty(response.Error?.Content))
+                    if (!string.IsNullOrEmpty((response.Error as global::Refit.ApiException)?.Content))
                     {
                         try
                         {
-                            var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content);
+                            var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(((global::Refit.ApiException)response.Error!).Content);
                             if (problemDetails != null)
                             {
                                 return ServiceResult<DiscountDto>.Error(problemDetails);
