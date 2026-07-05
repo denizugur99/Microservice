@@ -8,6 +8,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write
 
 jobs:
   build:
@@ -43,3 +44,20 @@ jobs:
             --squash \
             --auto \
             --repo "${{ github.repository }}"
+
+      - name: Wait for merge and trigger CD
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # GITHUB_TOKEN-authored pushes don't trigger other workflows' `push` events,
+          # so we explicitly dispatch CD once the merge to master actually lands.
+          for i in $(seq 1 30); do
+            state=$(gh pr view "${{ github.event.pull_request.number }}" --repo "${{ github.repository }}" --json state --jq .state)
+            if [ "$state" = "MERGED" ]; then
+              echo "PR merged, triggering CD workflow"
+              gh workflow run cd-deploy.yml --repo "${{ github.repository }}" --ref master
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "PR did not merge within timeout, skipping CD dispatch"
