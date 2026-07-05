@@ -15,7 +15,7 @@ namespace MicroserviceWebApp.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content!);
+                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(((global::Refit.ApiException)response.Error!).Content!);
 
                 logger.LogError("Error fetching categories: {Title} - {Detail}", problemDetails?.Title, problemDetails?.Detail);
                 return ServiceResult<List<CategoryViewModel>>.Error(problemDetails!);
@@ -50,7 +50,7 @@ namespace MicroserviceWebApp.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content!);
+                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(((global::Refit.ApiException)response.Error!).Content!);
                 logger.LogError("Error creating course: {Title} - {Detail}", problemDetails?.Title, problemDetails?.Detail);
                 return ServiceResult.Error(problemDetails!);
             }
@@ -65,7 +65,7 @@ namespace MicroserviceWebApp.Services
             var response = await catalogRefitService.GetAllCoursesAsync();
             if (!response.IsSuccessStatusCode)
             {
-                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content!);
+                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(((global::Refit.ApiException)response.Error!).Content!);
                 logger.LogError("Error fetching all courses: {Title} - {Detail}", problemDetails?.Title, problemDetails?.Detail);
                 return ServiceResult<List<CourseViewModel>>.Error(problemDetails!);
             }
@@ -91,7 +91,7 @@ namespace MicroserviceWebApp.Services
             var response = await catalogRefitService.GetCoursesByUserIdAsync(userService.GetUserId);
             if (!response.IsSuccessStatusCode)
             {
-                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content!);
+                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(((global::Refit.ApiException)response.Error!).Content!);
                 logger.LogError("Error fetching courses: {Title} - {Detail}", problemDetails?.Title, problemDetails?.Detail);
                 return ServiceResult<List<CourseViewModel>>.Error(problemDetails!);
             }
@@ -118,7 +118,7 @@ namespace MicroserviceWebApp.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content!);
+                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(((global::Refit.ApiException)response.Error!).Content!);
                 logger.LogError("Error deleting course: {Title} - {Detail}", problemDetails?.Title, problemDetails?.Detail);
                 return ServiceResult.Error(problemDetails!);
             }
@@ -132,7 +132,7 @@ namespace MicroserviceWebApp.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content!);
+                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(((global::Refit.ApiException)response.Error!).Content!);
                 logger.LogError("Error fetching course: {Title} - {Detail}", problemDetails?.Title, problemDetails?.Detail);
                 return ServiceResult<CourseViewModel>.Error(problemDetails!);
             }
@@ -162,7 +162,7 @@ namespace MicroserviceWebApp.Services
 
             if (!response.IsSuccessStatusCode)
             {
-                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content!);
+                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(((global::Refit.ApiException)response.Error!).Content!);
                 logger.LogError("Error updating course: {Title} - {Detail}", problemDetails?.Title, problemDetails?.Detail);
                 return ServiceResult.Error(problemDetails!);
             }

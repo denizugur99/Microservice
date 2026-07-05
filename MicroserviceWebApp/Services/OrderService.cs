@@ -11,7 +11,7 @@ namespace MicroserviceWebApp.Services
             var response = await orderRefitService.CreateOrderAsync(request);
             if (!response.IsSuccessStatusCode)
             {
-                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(response.Error.Content!);
+                var problemDetails = JsonSerializer.Deserialize<ProblemDetails>(((global::Refit.ApiException)response.Error!).Content!);
                 logger.LogError("Error creating order: {Title} - {Detail}", problemDetails?.Title, problemDetails?.Detail);
                 return ServiceResult<CreateOrderResponse>.Error(problemDetails!);
             }
