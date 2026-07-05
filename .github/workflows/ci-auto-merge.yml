@@ -1,0 +1,45 @@
+name: CI Build & Auto-Merge
+
+on:
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore
+        run: dotnet restore Microservice.slnx
+
+      - name: Build
+        run: dotnet build Microservice.slnx --configuration Release --no-restore
+        # No automated test projects exist in this repo yet.
+        # Once one is added, add a `dotnet test` step here before auto-merge is allowed to run.
+
+  auto-merge:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    steps:
+      - name: Enable auto-merge
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr merge "${{ github.event.pull_request.number }}" \
+            --squash \
+            --auto \
+            --repo "${{ github.repository }}"
